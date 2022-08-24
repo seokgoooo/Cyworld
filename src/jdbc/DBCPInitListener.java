@@ -15,7 +15,10 @@ import org.apache.commons.dbcp2.PoolableConnectionFactory;
 import org.apache.commons.dbcp2.PoolingDriver;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+//초기화할때 호출contextInitialized
+//종료할떄 contextDestroyed
 
+// 해당 파일로 web.xml을 읽어준다.
 public class DBCPInitListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
