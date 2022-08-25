@@ -8,11 +8,11 @@ import member.dao.MemberDao;
 import member.model.Member;
 
 public class LoginService {
-	private MemberDao userDao = new MemberDao();
+	private MemberDao memberDao = new MemberDao();
 
 	public User login(String id, String password) {
 		try (Connection conn = ConnectionProvider.getConnection()) {
-			Member member = userDao.selectById(conn, id);
+			Member member = memberDao.selectById(conn, id);
 			if (member == null) {
 				throw new LoginFailException();
 			}

@@ -21,8 +21,11 @@ public class MemberDao {
 			rs = pstmt.executeQuery();
 			Member member = null;
 			if (rs.next()) {
-				member = new Member(rs.getString("user_id"), rs.getString("user_pw"), rs.getString("name"),
-						rs.getString("gender"), toDate(rs.getTimestamp("regdate")));
+				member = new Member(rs.getString("user_id"),
+						rs.getString("user_pw"),
+						rs.getString("name"),
+						rs.getString("gender"),
+						toDate(rs.getTimestamp("regdate")));
 			}
 			return member;
 		} finally {
@@ -36,10 +39,10 @@ public class MemberDao {
 	}
 
 	public void insert(Connection conn, Member user) throws SQLException {
-		try (PreparedStatement pstmt = conn.prepareStatement("INSERT INTO users VALUES(?, ?, ?, ?, ?)")) {
+		try (PreparedStatement pstmt = conn.prepareStatement("INSERT INTO users (`user_id`, `user_pw`, `name`, `gender`, `regdate`) VALUES(?, ?, ?, ?, ?)")) {
 			pstmt.setString(1, user.getId());
-			pstmt.setString(3, user.getPassword());
-			pstmt.setString(2, user.getName());
+			pstmt.setString(2, user.getPassword());
+			pstmt.setString(3, user.getName());
 			pstmt.setString(4, user.getGender());
 			pstmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
 			pstmt.executeUpdate();

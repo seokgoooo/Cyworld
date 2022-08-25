@@ -26,6 +26,7 @@ public class JoinService {
 
 			memberDao.insert(conn, new Member(joinReq.getId(), joinReq.getPassword(), joinReq.getName(),
 					joinReq.getGender(), new Date()));
+
 			conn.commit();
 		} catch (SQLException e) {
 			JdbcUtil.rollback(conn);
