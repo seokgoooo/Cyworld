@@ -1,21 +1,21 @@
-package visitor.service;
+package owner.service;
 
 import java.util.List;
 
-import visitor.model.Visitor;
+import owner.model.Owner;
 
-public class VisitorPage {
+public class OwnerPage {
 	private int total;
 	private int currentPage;
-	private List<Visitor> content;
+	private List<Owner> comment;
 	private int totalPages;
 	private int startPage;
 	private int endPage;
 	
-	public VisitorPage(int total, int currentPage, int size, List<Visitor> content) {
+	public OwnerPage(int total, int currentPage, int size, List<Owner> comment) {
 		this.total = total;
 		this.currentPage = currentPage;
-		this.content = content;
+		this.comment = comment;
 		if(total == 0) {
 			totalPages = 0;
 			startPage = 0;
@@ -37,11 +37,11 @@ public class VisitorPage {
 		}
 	}
 	
-	public boolean hasVisitor() {
+	public boolean hasOwner() {
 		return total > 0;
 	}
 	
-	public boolean hasNoVisitor() {
+	public boolean hasNoOwner() {
 		return total == 0;
 	}
 
@@ -53,8 +53,8 @@ public class VisitorPage {
 		return currentPage;
 	}
 
-	public List<Visitor> getContent() {
-		return content;
+	public List<Owner> getComment() {
+		return comment;
 	}
 
 	public int getTotalPages() {
@@ -68,7 +68,6 @@ public class VisitorPage {
 	public int getEndPage() {
 		return endPage;
 	}
-	
-	
+
 	
 }

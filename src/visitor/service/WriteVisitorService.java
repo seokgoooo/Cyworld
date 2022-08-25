@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
 
-import visitor.service.WriteRequest;
+import visitor.service.WriteVisitorRequest;
 import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
 import visitor.dao.VisitorDAO;
@@ -13,7 +13,7 @@ import visitor.model.Visitor;
 public class WriteVisitorService {
 	private VisitorDAO visitorDao = new VisitorDAO();
 
-	public Integer write(WriteRequest req) {
+	public Integer write(WriteVisitorRequest req) {
 		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getConnection();
@@ -39,7 +39,7 @@ public class WriteVisitorService {
 		}
 	}
 	
-	private Visitor toVisitor(WriteRequest req) {
+	private Visitor toVisitor(WriteVisitorRequest req) {
 		Date now = new Date();
 		return new Visitor(null, req.getUser_id(), req.getContent(), now, now);
 	}

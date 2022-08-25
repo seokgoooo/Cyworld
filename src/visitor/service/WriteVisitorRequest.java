@@ -4,11 +4,11 @@ import java.util.Date;
 import java.util.Map;
 
 
-public class WriteRequest {
+public class WriteVisitorRequest {
 	private String user_id;
 	private String content;
 	
-	public WriteRequest(String user_id, String content) {
+	public WriteVisitorRequest(String user_id, String content) {
 		this.user_id = user_id;
 		this.content = content;
 	}
@@ -36,7 +36,7 @@ public class WriteRequest {
 
 	public void validate(Map<String, Boolean> errors) {
 		if(content == null || content.trim().isEmpty()) {
-			errors.put("title", Boolean.TRUE);
+			errors.put("content", Boolean.TRUE);
 		}
 	}
 

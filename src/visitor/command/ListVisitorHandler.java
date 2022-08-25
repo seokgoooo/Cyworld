@@ -18,7 +18,7 @@ public class ListVisitorHandler implements CommandHandler {
 			pageNo = Integer.parseInt(pageNoVal);
 		}
 		VisitorPage visitorPage = listService.getVisitorPage(pageNo);
-		req.setAttribute("articlePage", visitorPage);
+		req.setAttribute("visitorPage", visitorPage);
 		return "/WEB-INF/view/listVisitor.jsp";
 	}
 

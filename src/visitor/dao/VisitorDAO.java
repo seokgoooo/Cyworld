@@ -75,7 +75,7 @@ public class VisitorDAO {
 			rs = pstmt.executeQuery();
 			List<Visitor> result = new ArrayList<Visitor>();
 			while(rs.next()) {
-				result.add(convertArticle(rs));
+				result.add(convertVisitor(rs));
 			}
 			return result;
 		} finally {
@@ -84,7 +84,7 @@ public class VisitorDAO {
 		}
 	}
 
-	private Visitor convertArticle(ResultSet rs) throws SQLException {
+	private Visitor convertVisitor(ResultSet rs) throws SQLException {
 		return new Visitor(
 		rs.getInt("content_num"),
 		rs.getString("user_id"),
