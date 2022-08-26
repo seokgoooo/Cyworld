@@ -6,15 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-<<<<<<< HEAD
 import java.util.Date;
 
 import photo.model.Photo;
 import jdbc.JdbcUtil;
-import photo.model.Photo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PhotoDao {
-
 	public Photo insert(Connection conn, Photo photo) throws SQLException {
 		PreparedStatement pstmt = null;
 		Statement stmt = null;
@@ -26,7 +26,7 @@ public class PhotoDao {
 			pstmt.setString(1, photo.getTitle());
 			pstmt.setTimestamp(2, toTimestamp(photo.getRegDate()));
 			pstmt.setTimestamp(3, toTimestamp(photo.getModDate()));
-			pstmt.setString(4, "id");
+			pstmt.setInt(4, Integer.parseInt(photo.getUploader().getId()));
 			int insertedCount = pstmt.executeUpdate();
 			// 업데이트는 늘 한번만 되니깐 insertedCount는 1
 
@@ -35,10 +35,7 @@ public class PhotoDao {
 				rs = stmt.executeQuery("select last_insert_id() from photo"); // 포토 칼럼의 맨 마지막 id 가져옴
 				if (rs.next()) {
 					Integer newNo = rs.getInt(1); // rs에 담아둔 id값의 첫번째 칼럼을 newNo에 담음
-					return new Photo(newNo,
-							photo.getTitle(),
-							photo.getRegDate(),
-							photo.getModDate(),
+					return new Photo(newNo, photo.getTitle(), photo.getRegDate(), photo.getModDate(),
 							photo.getUserId());
 				}
 			}
@@ -52,16 +49,8 @@ public class PhotoDao {
 
 	private Timestamp toTimestamp(Date date) {
 		return new Timestamp(date.getTime());
-=======
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+	}
 
-import jdbc.JdbcUtil;
-import jdbc.connection.ConnectionProvider;
-import photo.model.Photo;
-
-public class PhotoDao {
 	// 게시글 개수를 구하기위한 selectCount 메소드
 	public int selectCount(Connection conn) throws SQLException {
 		Statement stmt = null;
@@ -105,9 +94,11 @@ public class PhotoDao {
 	}
 
 	private Photo convertPhoto(ResultSet rs) throws SQLException {
-		return new Photo(rs.getString("photo_title"), toDate(rs.getTimestamp("photo_regDate")),
-				toDate(rs.getTimestamp("photo_modDate")), rs.getString("user_Id"), rs.getInt("readcount"));
-
+		return new Photo(rs.getInt("photoNum"),
+				rs.getString("photo_title"),
+				toDate(rs.getTimestamp("photo_regDate")),
+				toDate(rs.getTimestamp("photo_modDate")),
+				rs.getString("photo_title"));
 	}
 
 	private Date toDate(Timestamp timestamp) {
@@ -126,7 +117,7 @@ public class PhotoDao {
 			if (rs.next()) {
 				photo = convertPhoto(rs);
 			}
-			
+
 			return photo;
 		} finally {
 			JdbcUtil.close(rs);
@@ -140,7 +131,5 @@ public class PhotoDao {
 			pstmt.setInt(1, no);
 			pstmt.executeUpdate();
 		}
->>>>>>> refs/remotes/origin/JinSeong
 	}
-
 }

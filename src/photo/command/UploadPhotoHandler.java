@@ -12,7 +12,7 @@ import photo.service.UploadPhotoRequest;
 import photo.service.UploadPhotoService;
 
 public class UploadPhotoHandler implements CommandHandler {
-	private static final String FORM_VIEW = "/WEB-INF/view/photouploadform.jsp";
+	private static final String FORM_VIEW = "./uploadForm.jsp";
 	private UploadPhotoService uploadphotoservice = new UploadPhotoService();
 
 	@Override
@@ -39,18 +39,18 @@ public class UploadPhotoHandler implements CommandHandler {
 		UploadPhotoRequest photouploadReq = createUploadRequest(user, req);
 		photouploadReq.validate(errors);
 
+		int newPhotoNo = uploadphotoservice.upload(photouploadReq);
+		req.setAttribute("newPhotoNo", newPhotoNo);
+
 		if (!errors.isEmpty()) {
 			return FORM_VIEW; // 요청 성공 -> form.jsp
 		}
 
-		int newPhotoNo = uploadphotoservice.upload(photouploadReq);
-		req.setAttribute("newPhotoNo", newPhotoNo);
-
-		return "./photouploadsuccess.jsp";
+		return "./uploadSuccess.jsp";
 	}
 
 	private UploadPhotoRequest createUploadRequest(User user, HttpServletRequest req) {
-		return new UploadPhotoRequest(new Uploader("id", "name"), req.getParameter("title"),
+		return new UploadPhotoRequest(new Uploader(user.getId(), user.getName()), req.getParameter("title"),
 				req.getParameter("content"));
 	}
 }

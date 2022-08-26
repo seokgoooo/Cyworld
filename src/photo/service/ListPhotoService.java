@@ -11,7 +11,7 @@ import photo.model.Photo;
 public class ListPhotoService {
 	private PhotoDao photoDao = new PhotoDao();
 	private int size = 10;
-	
+
 	public PhotoPage getPhotoPage(int pageNum) {
 		try (Connection conn = ConnectionProvider.getConnection()) {
 			int total = photoDao.selectCount(conn);
@@ -21,5 +21,4 @@ public class ListPhotoService {
 			throw new RuntimeException(e);
 		}
 	}
-
 }

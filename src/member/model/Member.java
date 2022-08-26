@@ -3,27 +3,32 @@ package member.model;
 import java.util.Date;
 
 public class Member {
+	private Integer num;
 	private String id;
-	private String password;
+	private String pw;
 	private String name;
 	private String gender;
 	private String img_path;
 	private Date regdate;
 
-	public Member(String id, String password, String name, String gender, Date regdate) {
+	public Member(String id, String pw, String name, String gender, Date regdate) {
 		this.id = id;
-		this.password = password;
+		this.pw = pw;
 		this.name = name;
 		this.gender = gender;
 		this.regdate = regdate;
+	}
+
+	public Integer getNum() {
+		return num;
 	}
 
 	public String getId() {
 		return id;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getPw() {
+		return pw;
 	}
 
 	public String getName() {
@@ -47,11 +52,11 @@ public class Member {
 	}
 
 	public boolean matchPassword(String pwd) {
-		return password.equals(pwd);
+		return pw.equals(pwd);
 	}
 
 	public void changePassword(String newPwd) {
-		this.password = newPwd;
+		this.pw = newPwd;
 	}
 
 }

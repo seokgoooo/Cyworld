@@ -28,7 +28,8 @@ public class UploadPhotoService {
 				throw new RuntimeException("fail to insert article");
 			}
 
-			PhotoContent content = new PhotoContent(new Integer(0), req.getContent());
+			PhotoContent content = new PhotoContent(savedPhoto.getPhotoNum(), req.getContent(), req.getContent(),
+					savedPhoto.getPhotoNum());
 			PhotoContent savedContent = contentDao.insert(conn, content);
 
 			if (savedContent == null) {
