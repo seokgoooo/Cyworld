@@ -35,9 +35,9 @@
 
 							<div class="profile_1">
 
-								<!-- 회원가입할때 등록한 사진을 출력 -->
-								<img class="profile_image" src="../upload/${loginUser.photoUrl}" />
-
+								<%-- <!-- 회원가입할때 등록한 사진을 출력 -->
+								<img class="profile_image" src="../upload/${authUser.photoUrl}" />
+ --%>
 							</div>
 
 							<div class="profile_3">

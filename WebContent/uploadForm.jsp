@@ -9,19 +9,19 @@
 </head>
 <body>
 	<form action = "./photo/upload.do" method="POST">
+	
 		<p>
-			제목 : <br /> <input type="text" name="title" value="${ param.title }">
+			제목 :<br /><input type="text" name="title" value="${ param.title }">
 			<c:if test="${ errors.title }"> 제목을 입력하세요. </c:if>
 		</p>
+		
 		<p>
 			내용:<br />
 			<textarea name="content" rows="5" cols="30"> ${ param.content }</textarea>
 		</p>
+		
 		<input type="submit" value="글쓰기">
-		<form>
-			<input type="file" name="fileupload" />
-		</form>
-
+		
 	</form>
 </body>
 </html>

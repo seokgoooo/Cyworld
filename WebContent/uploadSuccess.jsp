@@ -8,9 +8,10 @@
 </head>
 <body>
 	업로드를 성공했습니다.
-	${ param.content }
+	<p>${ param.content }</p>
+	<p>${ newPhotoNo }</p>
 	<br> ${ctxPath = pageContext.request.contextPath ;''}
-	<a href="${ctxPath}/Photo/list.do"> 게시글 보기 </a>
-	<a href="${ctxPath}/Photo/read.do?no=${newArticleNo}">[게시글 내용보기]</a>
+	<a href="${ctxPath}/photo/list.do"> 게시글 보기 </a>
+	<a href="${ctxPath}/photo/read.do?no=${newPhotoNo}">[게시글 내용보기]</a>
 </body>
 </html>
