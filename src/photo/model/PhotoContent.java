@@ -7,12 +7,12 @@ public class PhotoContent {
 	private String content;
 	private Blob contentImg;
 	private int photoNum;
+	
 	public PhotoContent () {
 		
 	}
-	public PhotoContent(int contentNum, String content, Blob contentImg, int photoNum) {
-		super();
-		this.contentNum = contentNum;
+	public PhotoContent(String content, Blob contentImg, int photoNum) {
+		
 		this.content = content;
 		this.contentImg = contentImg;
 		this.photoNum = photoNum;

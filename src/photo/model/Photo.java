@@ -14,9 +14,8 @@ public class Photo {
 	public Photo() {
 		
 	}
-	public Photo(int photoNum, String title, Date regDate, Date modDate, String userId, int readCount) {
-		super();
-		this.photoNum = photoNum;
+	public Photo(String title, Date regDate, Date modDate, String userId, int readCount) {
+		
 		this.title = title;
 		this.regDate = regDate;
 		this.modDate = modDate;
