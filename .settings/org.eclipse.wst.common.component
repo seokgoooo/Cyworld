@@ -3,11 +3,16 @@
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+<<<<<<< HEAD
         <property name="context-root" value="CyworldProject"/>
 <<<<<<< HEAD
         <property name="java-output-path" value="/Cyworldteam/target/classes"/>
 =======
         <property name="java-output-path" value="/CyworldProject/target/classes"/>
 >>>>>>> refs/remotes/origin/JinSeong
+=======
+        <property name="java-output-path" value="/Cyworld/target/classes"/>
+        <property name="context-root" value="/"/>
+>>>>>>> refs/remotes/origin/Dongwan
     </wb-module>
 </project-modules>
