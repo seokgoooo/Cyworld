@@ -12,6 +12,9 @@ import java.util.List;
 
 import jdbc.JdbcUtil;
 import visitor.model.Visitor;
+import visitor.model.Writer;
+import visitor.service.VisitorRequest;
+import visitor.service.WriteVisitorRequest;
 
 public class VisitorDAO {
 	
@@ -20,22 +23,22 @@ public class VisitorDAO {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("insert into content"
-					+ "(user_id, content, content_regdate, content_moddate)"
+			pstmt = conn.prepareStatement("insert into visitor_content"
+					+ "(content, content_regdate, content_moddate, user_num)"
 					+ "values (?, ?, ?, ?)");
-			pstmt.setString(1, "진성");
-			pstmt.setString(2, visitor.getContent());
-			pstmt.setTimestamp(3, toTimestamp(visitor.getContent_regdate()));
-			pstmt.setTimestamp(4, toTimestamp(visitor.getContent_moddate()));
+			pstmt.setString(1, visitor.getContent());
+			pstmt.setTimestamp(2, toTimestamp(visitor.getContent_regdate()));
+			pstmt.setTimestamp(3, toTimestamp(visitor.getContent_moddate()));
+			pstmt.setInt(4, 1);
 			int insertedCount = pstmt.executeUpdate();
 			
 			if(insertedCount > 0) {
 				stmt = conn.createStatement();
-				rs = stmt.executeQuery("SELECT last_insert_id() from content");
+				rs = stmt.executeQuery("SELECT last_insert_id() from visitor_content");
 				if(rs.next()) {
 					Integer newNum = rs.getInt(1);
 					return new Visitor(newNum, 
-							visitor.getUser_id(), 
+							visitor.getUser_num(), 
 							visitor.getContent(), 
 							visitor.getContent_regdate(), 
 							visitor.getContent_moddate());
@@ -54,7 +57,7 @@ public class VisitorDAO {
 		ResultSet rs = null;
 		try {
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT count(*) from content");
+			rs = stmt.executeQuery("SELECT count(*) from visitor_content");
 			if(rs.next()) {
 				return rs.getInt(1);
 			}
@@ -69,7 +72,7 @@ public class VisitorDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("SELECT * from content order by content_num desc limit ?, ?");
+			pstmt = conn.prepareStatement("SELECT * from visitor_content order by content_num desc limit ?, ?");
 			pstmt.setInt(1, startRow);
 			pstmt.setInt(2, size);
 			rs = pstmt.executeQuery();
@@ -83,16 +86,57 @@ public class VisitorDAO {
 			JdbcUtil.close(pstmt);
 		}
 	}
+	
+	public List<String> selectName(Connection conn) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement("SELECT B.*, A.name FROM users AS A INNER JOIN visitor_content AS B on A.num = B.user_num");
+			rs = pstmt.executeQuery();
+			List<String> name = new ArrayList<String>();
+			while(rs.next()) {
+				name.add(rs.getString("name"));
+			}
+			return name;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+	}
+	
+	
+//	public List<VisitorRequest> selectWriteVisitor(Connection conn, int startRow, int size) throws SQLException {
+//		PreparedStatement pstmt = null;
+//		ResultSet rs = null;
+//		try {
+//			pstmt = conn.prepareStatement("SELECT B.*, A.name FROM users  AS A INNER JOIN visitor_content AS B on A.num = B.user_num desc limit ?, ?");
+//			pstmt.setInt(1, startRow);
+//			pstmt.setInt(2, size);
+//			rs = pstmt.executeQuery();
+//			List<WriteVisitorRequest> result = new ArrayList<WriteVisitorRequest>();
+//			while(rs.next()) {
+//				result.add(convertWriteVisitor(rs));
+//			}
+//			return result;
+//		} finally {
+//			JdbcUtil.close(rs);
+//			JdbcUtil.close(pstmt);
+//		}
+//	}
 
 	private Visitor convertVisitor(ResultSet rs) throws SQLException {
 		return new Visitor(
 		rs.getInt("content_num"),
-		rs.getString("user_id"),
+		rs.getInt("user_num"),
 		rs.getString("content"),
 		toDate(rs.getTimestamp("content_regdate")),
 		toDate(rs.getTimestamp("content_moddate")));
 	}
+	
 
+//	private VisitorRequest convertWriteVisitor(ResultSet rs) throws SQLException {
+//		return new VisitorRequest(new Writer(Integer.valueOf(rs.getString("user_num")), rs.getString("name")), convertVisitor(rs));
+//	}
 
 	private Timestamp toTimestamp(Date date) {
 		return new Timestamp(date.getTime());

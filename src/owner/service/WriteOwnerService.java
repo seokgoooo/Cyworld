@@ -41,6 +41,6 @@ public class WriteOwnerService {
 	
 	private Owner toOwner(WriteOwnerRequest req) {
 		Date now = new Date();
-		return new Owner(null, req.getComment(), now, now, req.getContent_num());
+		return new Owner(null, req.getComment(), now, now, req.getWriter().getUser_num());
 	}
 }

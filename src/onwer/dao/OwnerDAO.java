@@ -20,7 +20,7 @@ public class OwnerDAO {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("insert into comment (comment, comment_regdate, comment_moddate, content_num) values (?, ?, ?, ?)");
+			pstmt = conn.prepareStatement("insert into visitor_comment (comment, comment_regdate, comment_moddate, content_num) values (?, ?, ?, ?)");
 			pstmt.setString(1, owner.getComment());
 			pstmt.setTimestamp(2, toTimestamp(owner.getComment_regdate()));
 			pstmt.setTimestamp(3, toTimestamp(owner.getComment_moddate()));
@@ -29,7 +29,7 @@ public class OwnerDAO {
 			
 			if(insertedCount > 0) {
 				stmt = conn.createStatement();
-				rs = stmt.executeQuery("SELECT last_insert_id() from comment");
+				rs = stmt.executeQuery("SELECT last_insert_id() from visitor_comment");
 				if(rs.next()) {
 					Integer newNum = rs.getInt(1);
 					return new Owner(newNum, 
@@ -52,7 +52,7 @@ public class OwnerDAO {
 		ResultSet rs = null;
 		try {
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT count(*) from comment");
+			rs = stmt.executeQuery("SELECT count(*) from visitor_comment");
 			if(rs.next()) {
 				return rs.getInt(1);
 			}
@@ -67,7 +67,7 @@ public class OwnerDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("SELECT * from comment order by comment_num desc limit ?, ?");
+			pstmt = conn.prepareStatement("SELECT * from visitor_comment order by comment_num desc limit ?, ?");
 			pstmt.setInt(1, startRow);
 			pstmt.setInt(2, size);
 			rs = pstmt.executeQuery();

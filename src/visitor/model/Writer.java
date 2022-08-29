@@ -1,17 +1,20 @@
 package visitor.model;
 
 public class Writer {
-	private String id;
+	private Integer user_num;
 	private String name;
 	
-	public Writer(String id, String name) {
-		this.id = id;
+
+	public Writer(Integer user_num, String name) {
+		this.user_num = user_num;
 		this.name = name;
 	}
 
-	public String getId() {
-		return id;
+	
+	public Integer getUser_num() {
+		return user_num;
 	}
+
 
 	public String getName() {
 		return name;

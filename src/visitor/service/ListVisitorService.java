@@ -17,7 +17,8 @@ public class ListVisitorService {
 			int total = visitorDao.selectCount(conn);
 			List<Visitor> content = visitorDao.select(
 					conn, (pageNum - 1) * size, size);
-			return new VisitorPage(total, pageNum, size, content);
+			List<String> name = visitorDao.selectName(conn);
+			return new VisitorPage(total, pageNum, size, content, name);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}

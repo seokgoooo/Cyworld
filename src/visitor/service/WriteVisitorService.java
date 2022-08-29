@@ -41,7 +41,7 @@ public class WriteVisitorService {
 	
 	private Visitor toVisitor(WriteVisitorRequest req) {
 		Date now = new Date();
-		return new Visitor(null, req.getWriter().getId(), req.getContent(), now, now);
+		return new Visitor(null, req.getWriter().getUser_num(), req.getContent(), now, now);
 	}
 	
 }

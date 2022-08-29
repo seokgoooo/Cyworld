@@ -31,7 +31,7 @@
 	<c:forEach var="visitor" items="${ visitorPage.content }">
 		<tr>
 			<td>${ visitor.content_num }</td>
-			<td>${ visitor.user_id }</td>
+			<td>${ visitor.name }</td>
 			<td>${ visitor.content }</td>
 			<td>${ visitor.content_regdate }</td>
 		</tr>
@@ -52,16 +52,7 @@
 		</tr>
 	</c:if>
  
- <!-- 
- <c:forEach var="visitor" items="${ visitorPage.content }">
-	 <div id="content">
-		 <p>${ visitor.content_num }</p>
-		 <p>${ visitor.user_id }</p>
-	 	 <p>${ visitor.content }</p>
-		 <p>${ visitor.content_regdate }</p>
-	 </div>
- </c:forEach>
--->
+ 
 </table>
 </body>
 </html>

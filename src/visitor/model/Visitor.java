@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Visitor {
 	private Integer content_num;
-	private String user_id;
+	private Integer user_num;
 	private String content;
 	private Date content_regdate;
 	private Date content_moddate;
@@ -13,13 +13,26 @@ public class Visitor {
 	public Visitor() {
 	}
 
-	public Visitor(Integer content_num, String user_id, String content, Date content_regdate, Date content_moddate) {
+
+	public Visitor(Integer content_num, Integer user_num, String content, Date content_regdate, Date content_moddate) {
 		this.content_num = content_num;
-		this.user_id = user_id;
+		this.user_num = user_num;
 		this.content = content;
 		this.content_regdate = content_regdate;
 		this.content_moddate = content_moddate;
 	}
+
+
+
+	public Integer getUser_num() {
+		return user_num;
+	}
+
+
+	public void setUser_num(Integer user_num) {
+		this.user_num = user_num;
+	}
+
 
 	public int getContent_num() {
 		return content_num;
@@ -29,13 +42,6 @@ public class Visitor {
 		this.content_num = content_num;
 	}
 
-	public String getUser_id() {
-		return user_id;
-	}
-
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
-	}
 
 	public String getContent() {
 		return content;
@@ -61,12 +67,12 @@ public class Visitor {
 		this.content_moddate = content_moddate;
 	}
 
+
 	@Override
 	public String toString() {
-		return "ContentVO [content_num=" + content_num + ", user_id=" + user_id + ", content=" + content
+		return "Visitor [content_num=" + content_num + ", user_num=" + user_num + ", content=" + content
 				+ ", content_regdate=" + content_regdate + ", content_moddate=" + content_moddate + "]";
 	}
-	
-	
+
 	
 }

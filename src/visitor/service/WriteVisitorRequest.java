@@ -10,6 +10,7 @@ import visitor.model.Writer;
 public class WriteVisitorRequest {
 	private Writer writer;
 	private String content;
+
 	
 	public WriteVisitorRequest(Writer writer, String content) {
 		this.writer = writer;
@@ -42,5 +43,6 @@ public class WriteVisitorRequest {
 			errors.put("content", Boolean.TRUE);
 		}
 	}
+
 
 }

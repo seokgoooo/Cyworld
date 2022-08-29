@@ -16,16 +16,13 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("SELECT * FROM users WHERE user_id = ?");
+			pstmt = conn.prepareStatement("SELECT * FROM users WHERE id = ?");
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			Member member = null;
 			if (rs.next()) {
-				member = new Member(rs.getString("user_id"),
-						rs.getString("user_pw"),
-						rs.getString("name"),
-						rs.getString("gender"),
-						toDate(rs.getTimestamp("regdate")));
+				member = new Member(rs.getInt("num"), rs.getString("id"), rs.getString("pw"), rs.getString("name"),
+						rs.getString("gender"), toDate(rs.getTimestamp("regdate")));
 			}
 			return member;
 		} finally {
@@ -34,14 +31,11 @@ public class MemberDao {
 		}
 	}
 
-	private Date toDate(Timestamp date) {
-		return date == null ? null : new Date(date.getTime());
-	}
-
 	public void insert(Connection conn, Member user) throws SQLException {
-		try (PreparedStatement pstmt = conn.prepareStatement("INSERT INTO users (`user_id`, `user_pw`, `name`, `gender`, `regdate`) VALUES(?, ?, ?, ?, ?)")) {
+		try (PreparedStatement pstmt = conn.prepareStatement(
+				"INSERT INTO users (`id`, `pw`, `name`, `gender`, `regdate`) VALUES(?, ?, ?, ?, ?)")) {
 			pstmt.setString(1, user.getId());
-			pstmt.setString(2, user.getPassword());
+			pstmt.setString(2, user.getPw());
 			pstmt.setString(3, user.getName());
 			pstmt.setString(4, user.getGender());
 			pstmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
@@ -50,12 +44,15 @@ public class MemberDao {
 	}
 
 	public void update(Connection conn, Member user) throws SQLException {
-		try (PreparedStatement pstmt = conn
-				.prepareStatement("UPDATE users SET user_pw = ?, img_path = ? WHERE user_id = ?")) {
-			pstmt.setString(1, user.getPassword());
+		try (PreparedStatement pstmt = conn.prepareStatement("UPDATE users SET pw = ?, img_path = ? WHERE id = ?")) {
+			pstmt.setString(1, user.getPw());
 			pstmt.setString(2, user.getImg_path());
 			pstmt.setString(3, user.getId());
 			pstmt.executeUpdate();
 		}
+	}
+
+	private Date toDate(Timestamp date) {
+		return date == null ? null : new Date(date.getTime());
 	}
 }

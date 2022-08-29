@@ -6,9 +6,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import auth.service.User;
 import mvc.command.CommandHandler;
 import owner.service.WriteOwnerRequest;
 import owner.service.WriteOwnerService;
+import visitor.model.Writer;
 
 public class WriteOwnerHandler implements CommandHandler {
 	private static final String FORM_VIEW = "/WEB-INF/view/newVisitorForm.jsp";
@@ -35,6 +37,7 @@ public class WriteOwnerHandler implements CommandHandler {
 		Map<String, Boolean> errors = new HashMap<>();
 		req.setAttribute("errors", errors);
 		
+		User user = (User) req.getSession(false).getAttribute("authUser");
 		WriteOwnerRequest writeReq = createWriteRequest(req);
 		writeReq.validate(errors);
 		
@@ -51,7 +54,7 @@ public class WriteOwnerHandler implements CommandHandler {
 	
 	private WriteOwnerRequest createWriteRequest(HttpServletRequest req) {
 		return new WriteOwnerRequest(
-				1,
+				new Writer(1, "name"),
 				req.getParameter("comment"));
 	}
 }

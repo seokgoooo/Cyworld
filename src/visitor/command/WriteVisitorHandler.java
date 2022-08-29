@@ -54,7 +54,7 @@ public class WriteVisitorHandler implements CommandHandler {
 	
 	private WriteVisitorRequest createWriteRequest(User user, HttpServletRequest req) {
 		return new WriteVisitorRequest(
-				new Writer("id", "name"),
+				new Writer(user.getNum(), user.getName()),
 				req.getParameter("content"));
 	}
 }
