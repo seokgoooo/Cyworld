@@ -23,7 +23,7 @@ public class VisitorDAO {
 			pstmt = conn.prepareStatement("insert into content"
 					+ "(user_id, content, content_regdate, content_moddate)"
 					+ "values (?, ?, ?, ?)");
-			pstmt.setString(1, visitor.getUser_id());
+			pstmt.setString(1, "진성");
 			pstmt.setString(2, visitor.getContent());
 			pstmt.setTimestamp(3, toTimestamp(visitor.getContent_regdate()));
 			pstmt.setTimestamp(4, toTimestamp(visitor.getContent_moddate()));

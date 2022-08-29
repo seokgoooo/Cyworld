@@ -13,7 +13,7 @@
 	내용:<br/>
 	<textarea name="content" rows="5" cols="30">${ param.content }</textarea>
 </p>
-<input type="submit" value="새 글 등록"/>
+<input type="submit" value="방명록 등록"/>
 </form>
 
 <table border="1">
@@ -51,24 +51,17 @@
 			</td>
 		</tr>
 	</c:if>
-	
-	<tr>
-		<td>번호</td>
-		<td>방명록</td>
-		<td>작성일자</td>
-	</tr>
-	<c:if test="${ ownerPage.hasNoOwner() }">
-		<tr>
-			<td colspan="4">게시글이 없습니다.</td>
-		</tr>
-	</c:if>
-	<c:forEach var="owner" items="${ ownerPage.comment }">
-		<tr>
-			<td>${ owner.comment_num }</td>
-			<td>${ owner.comment }</td>
-			<td>${ owner.comment_regdate }</td>
-		</tr>
-	</c:forEach>
+ 
+ <!-- 
+ <c:forEach var="visitor" items="${ visitorPage.content }">
+	 <div id="content">
+		 <p>${ visitor.content_num }</p>
+		 <p>${ visitor.user_id }</p>
+	 	 <p>${ visitor.content }</p>
+		 <p>${ visitor.content_regdate }</p>
+	 </div>
+ </c:forEach>
+-->
 </table>
 </body>
 </html>

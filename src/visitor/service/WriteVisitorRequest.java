@@ -3,18 +3,21 @@ package visitor.service;
 import java.util.Date;
 import java.util.Map;
 
+import auth.service.User;
+import visitor.model.Writer;
+
 
 public class WriteVisitorRequest {
-	private String user_id;
+	private Writer writer;
 	private String content;
 	
-	public WriteVisitorRequest(String user_id, String content) {
-		this.user_id = user_id;
+	public WriteVisitorRequest(Writer writer, String content) {
+		this.writer = writer;
 		this.content = content;
 	}
 
-	public String getUser_id() {
-		return user_id;
+	public Writer getWriter() {
+		return writer;
 	}
 
 	public String getContent() {

@@ -45,13 +45,13 @@ public class WriteOwnerHandler implements CommandHandler {
 		int newOwnerNo = writeService.write(writeReq);
 		req.setAttribute("newOwnerNo", newOwnerNo);
 		
-		return "/WEB-INF/view/newVisitorSuccess.jsp";
+		return "/owner/owner.do";
 		
 	}
 	
 	private WriteOwnerRequest createWriteRequest(HttpServletRequest req) {
 		return new WriteOwnerRequest(
-				Integer.valueOf(req.getParameter("content_num")),
+				1,
 				req.getParameter("comment"));
 	}
 }

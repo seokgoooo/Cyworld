@@ -8,6 +8,16 @@
 <title>Insert title here</title>
 </head>
 <body>
+
+<form action="newowner.do" method="post">
+<p>
+	내용:<br/>
+	<textarea name="comment" rows="5" cols="30">${ param.comment }</textarea>
+</p>
+<input type="submit" value="댓글 등록"/>
+</form>
+
+
 <table border="1">
 	<tr>
 		<td>번호</td>

@@ -20,7 +20,7 @@ public class OwnerDAO {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("insert into comment (comment_num, comment, comment_regdate, comment_moddate) values (?, ?, ?, ?)");
+			pstmt = conn.prepareStatement("insert into comment (comment, comment_regdate, comment_moddate, content_num) values (?, ?, ?, ?)");
 			pstmt.setString(1, owner.getComment());
 			pstmt.setTimestamp(2, toTimestamp(owner.getComment_regdate()));
 			pstmt.setTimestamp(3, toTimestamp(owner.getComment_moddate()));
