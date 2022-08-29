@@ -11,12 +11,13 @@ public class Member {
 	private String img_path;
 	private Date regdate;
 
-	public Member(String id, String pw, String name, String gender, Date regdate) {
+	public Member(String id, String pw, String name, String gender, Date regdate, String img_path) {
 		this.id = id;
 		this.pw = pw;
 		this.name = name;
 		this.gender = gender;
 		this.regdate = regdate;
+		this.img_path = img_path;
 	}
 
 	public Integer getNum() {

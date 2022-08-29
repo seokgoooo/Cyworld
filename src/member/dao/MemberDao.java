@@ -21,8 +21,12 @@ public class MemberDao {
 			rs = pstmt.executeQuery();
 			Member member = null;
 			if (rs.next()) {
-				member = new Member(rs.getString("id"), rs.getString("pw"), rs.getString("name"),
-						rs.getString("gender"), toDate(rs.getTimestamp("regdate")));
+				member = new Member(rs.getString("id"),
+						rs.getString("pw"),
+						rs.getString("name"),
+						rs.getString("gender"),
+						toDate(rs.getTimestamp("regdate")),
+						rs.getString("img_path"));
 			}
 			return member;
 		} finally {
