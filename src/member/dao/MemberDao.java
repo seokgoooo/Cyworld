@@ -26,7 +26,8 @@ public class MemberDao {
 						rs.getString("name"),
 						rs.getString("gender"),
 						toDate(rs.getTimestamp("regdate")),
-						rs.getString("img_path"));
+						rs.getString("img_path"), 
+						rs.getString("title"));
 			}
 			return member;
 		} finally {
@@ -48,10 +49,11 @@ public class MemberDao {
 	}
 
 	public void update(Connection conn, Member user) throws SQLException {
-		try (PreparedStatement pstmt = conn.prepareStatement("UPDATE users SET pw = ?, img_path = ? WHERE id = ?")) {
+		try (PreparedStatement pstmt = conn.prepareStatement("UPDATE users SET pw = ?, img_path = ?, title = ? WHERE id = ?")) {
 			pstmt.setString(1, user.getPw());
 			pstmt.setString(2, user.getImg_path());
-			pstmt.setString(3, user.getId());
+			pstmt.setString(3, user.getTitle());
+			pstmt.setString(4, user.getId());
 			pstmt.executeUpdate();
 		}
 	}

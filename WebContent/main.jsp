@@ -10,7 +10,14 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<title>${ authUser.name }님의미니홈피입니다.</title>
+<c:if test="${ empty authUser.title }">
+	<title>${ authUser.id }님의미니홈피입니다.</title>
+</c:if>
+
+<c:if test="${ not empty authUser.title }">
+	<title>${ authUser.title }</title>
+</c:if>
+
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/font.css" />
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/layout.css" />
@@ -22,21 +29,45 @@
 			<div class="page">
 				<div class="home">
 					<div class="upside">
+						<c:if test="${ empty authUser.title }">
+							<br>
+							<strong><span style="color: coral;"></span></strong>
+							&emsp;&emsp;&emsp; &emsp;
+							<span class="title"> ${ authUser.id }님의미니홈피입니다.</span>
+							&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+						</c:if>
 
-						<br> <strong><span style="color: coral;"></span></strong>
-						&emsp;&emsp;&emsp; &emsp; <span class="title">${ authUser.name }님의
-							미니홈피입니다.</span> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+						<c:if test="${ not empty authUser.title }">
+							<br>
+							<strong><span style="color: coral;"></span></strong>
+							&emsp;&emsp;&emsp; &emsp;
+							<span class="title">${ authUser.title }</span>
+							&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+						</c:if>
+
+						<a href="#"> <span class="updated_news_blue"
+							style="float: right">&nbsp;EDIT&nbsp;</span></a>
 					</div>
+
 
 					<div class="home_main">
 						<div class="profile">
 							<div class="profile_1">
 								<!-- 회원가입할때 등록한 사진을 출력 -->
 								<c:if test="${ empty authUser.img }">
-								<img class="profile_image" src="./image/m.jpg" />
+									<img class="profile_image" src="./image/m.jpg" />
 								</c:if>
-								
-								<img class="profile_image" src="../upload/${authUser.img}" />
+
+								<c:if test="${ not empty authUser.img }">
+									<img class="profile_image" src="../upload/${authUser.img}" />
+								</c:if>
+
+								<a href="#"> <span class="updated_news_blue"
+									style="float: right">&nbsp;EDIT&nbsp;</span></a>
+							</div>
+
+							<div class="profile_2">
+								<p>자기소개 페이지로 쓸 공간 무슨 태그로 넣어야할까</p>
 							</div>
 
 							<div class="profile_3">
@@ -66,12 +97,16 @@
 								<div class="updated_news_left">
 									<!-- 사진첩에서 가장 최근에 등록된 글을 띄어줌 -->
 									<span class="updated_news_left1"> <!-- 사진첩 페이지로 이동하는 태그 -->
-										<a href="../photo/photo.do"><span
-											class="updated_news_blue">&nbsp;사진첩&nbsp;</span> ${photo }</a></span>
+										<a href="../photo/photo.do"> <span
+											class="updated_news_blue">&nbsp;사진첩&nbsp;</span> ${photo }
+									</a>
+									</span>
 									<!-- 방명록에서 가장 최근에 등록된 글을 띄어줌 -->
 									<span class="updated_news_left2"> <!-- 방명록 페이지로 이동하는 태그 -->
-										<a href="../visit/visit.do"><span class="updated_news_red">&nbsp;방명록&nbsp;</span>
-											${visit }</a></span>
+										<a href="../visit/visit.do"> <span
+											class="updated_news_red">&nbsp;방명록&nbsp;</span> ${visit }
+									</a>
+									</span>
 								</div>
 
 								<div class="updated_news_right">
@@ -106,10 +141,13 @@
 					<a href="#" class="menu_button1">&nbsp;&nbsp;홈</a>
 					<!-- 사진첩 페이지로 이동 -->
 					<a href="<%=request.getContextPath()%>/photo/list.do"
-						class="menu_button3">&nbsp;&nbsp;사진첩</a>
+						class="menu_button2">&nbsp;&nbsp;사진첩</a>
 					<!-- 방명록 페이지로 이동 -->
 					<a href="<%=request.getContextPath()%>/visitor/list.do"
-						class="menu_button4">&nbsp;&nbsp;방명록</a>
+						class="menu_button3">&nbsp;&nbsp;방명록</a>
+					<!-- 관리 페이지로 이동 -->
+					<a href="<%=request.getContextPath()%>/setting.do"
+						class="menu_button4">&nbsp;&nbsp;관리페이지</a>
 				</div>
 			</div>
 		</div>

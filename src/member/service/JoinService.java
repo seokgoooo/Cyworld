@@ -25,7 +25,7 @@ public class JoinService {
 			}
 
 			memberDao.insert(conn, new Member(joinReq.getId(), joinReq.getPassword(), joinReq.getName(),
-					joinReq.getGender(), new Date(), null));
+					joinReq.getGender(), new Date(), null, joinReq.getId() + "님의 미니홈피입니다."));
 
 			conn.commit();
 		} catch (SQLException e) {

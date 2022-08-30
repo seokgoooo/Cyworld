@@ -10,14 +10,16 @@ public class Member {
 	private String gender;
 	private String img_path;
 	private Date regdate;
+	private String title;
 
-	public Member(String id, String pw, String name, String gender, Date regdate, String img_path) {
+	public Member(String id, String pw, String name, String gender, Date regdate, String img_path, String title) {
 		this.id = id;
 		this.pw = pw;
 		this.name = name;
 		this.gender = gender;
 		this.regdate = regdate;
 		this.img_path = img_path;
+		this.title = title;
 	}
 
 	public Integer getNum() {
@@ -52,6 +54,14 @@ public class Member {
 		return regdate;
 	}
 
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public boolean matchPassword(String pwd) {
 		return pw.equals(pwd);
 	}
@@ -59,5 +69,4 @@ public class Member {
 	public void changePassword(String newPwd) {
 		this.pw = newPwd;
 	}
-
 }
