@@ -11,10 +11,8 @@ import java.util.Date;
 import java.util.List;
 
 import jdbc.JdbcUtil;
+import owner.model.Owner;
 import visitor.model.Visitor;
-import visitor.model.Writer;
-import visitor.service.VisitorRequest;
-import visitor.service.WriteVisitorRequest;
 
 public class VisitorDAO {
 	
@@ -29,7 +27,7 @@ public class VisitorDAO {
 			pstmt.setString(1, visitor.getContent());
 			pstmt.setTimestamp(2, toTimestamp(visitor.getContent_regdate()));
 			pstmt.setTimestamp(3, toTimestamp(visitor.getContent_moddate()));
-			pstmt.setInt(4, 1);
+			pstmt.setInt(4, visitor.getUser_num());
 			int insertedCount = pstmt.executeUpdate();
 			
 			if(insertedCount > 0) {
@@ -72,7 +70,7 @@ public class VisitorDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("SELECT * from visitor_content order by content_num desc limit ?, ?");
+			pstmt = conn.prepareStatement("SELECT A.*, B.comment_num, B.comment FROM (SELECT B.*, A.name FROM users AS A INNER JOIN visitor_content AS B on A.num = B.user_num) AS A INNER JOIN visitor_comment AS B on A.content_num = B.content_num ORDER BY content_num DESC limit ?, ?");
 			pstmt.setInt(1, startRow);
 			pstmt.setInt(2, size);
 			rs = pstmt.executeQuery();
@@ -87,17 +85,19 @@ public class VisitorDAO {
 		}
 	}
 	
-	public List<String> selectName(Connection conn) throws SQLException {
+	
+	// 새로 추가한부분
+	public List<Owner> selectOwner(Connection conn) throws SQLException {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("SELECT B.*, A.name FROM users AS A INNER JOIN visitor_content AS B on A.num = B.user_num");
+			pstmt = conn.prepareStatement("call fullcontent()");
 			rs = pstmt.executeQuery();
-			List<String> name = new ArrayList<String>();
+			List<Owner> owner = new ArrayList<Owner>();
 			while(rs.next()) {
-				name.add(rs.getString("name"));
+				owner.add(convertOwner(rs));
 			}
-			return name;
+			return owner;
 		} finally {
 			JdbcUtil.close(rs);
 			JdbcUtil.close(pstmt);
@@ -130,8 +130,21 @@ public class VisitorDAO {
 		rs.getInt("user_num"),
 		rs.getString("content"),
 		toDate(rs.getTimestamp("content_regdate")),
-		toDate(rs.getTimestamp("content_moddate")));
+		toDate(rs.getTimestamp("content_moddate")),
+		rs.getString("name"),
+		convertOwner(rs));
 	}
+	
+	
+	private Owner convertOwner(ResultSet rs) throws SQLException {
+		return new Owner(
+		rs.getInt("comment_num"),
+		rs.getString("comment"),
+		toDate(rs.getTimestamp("content_regdate")),
+		toDate(rs.getTimestamp("content_moddate")),
+		rs.getInt("content_num"));
+	}
+	
 	
 
 //	private VisitorRequest convertWriteVisitor(ResultSet rs) throws SQLException {

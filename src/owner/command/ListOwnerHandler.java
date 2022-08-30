@@ -19,6 +19,6 @@ public class ListOwnerHandler implements CommandHandler{
 		}
 		OwnerPage ownerPage = listService.getOwnerPage(pageNo);
 		req.setAttribute("ownerPage", ownerPage);
-		return "/WEB-INF/view/listOwner.jsp";
+		return "/WEB-INF/view/listVisitor.jsp";
 	}
 }

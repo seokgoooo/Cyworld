@@ -2,23 +2,24 @@ package visitor.service;
 
 import java.util.List;
 
+import owner.model.Owner;
 import visitor.model.Visitor;
 
 public class VisitorPage {
 	private int total;
 	private int currentPage;
 	private List<Visitor> content;
-//	private List<VisitorRequest> contentname;
-	private List<String> name;
+	private List<Owner> comment;
+//	private List<String> name; // 새로추가한 부분
 	private int totalPages;
 	private int startPage;
 	private int endPage;
 	
-	public VisitorPage(int total, int currentPage, int size, List<Visitor> content, List<String> name) {
+	public VisitorPage(int total, int currentPage, int size, List<Visitor> content, List<Owner> comment) {
 		this.total = total;
 		this.currentPage = currentPage;
 		this.content = content;
-		this.name = name;
+		this.comment = comment;
 //		this.name = name; // 새로 추가한부분
 		if(total == 0) {
 			totalPages = 0;
@@ -71,13 +72,17 @@ public class VisitorPage {
 	}
 	
 
-	public List<String> getName() {
-		return name;
-	}
+//	public List<String> getName() { //새로 추가한부분
+//		return name;
+//	}
 
 	public boolean hasNoVisitor() {
 		return total == 0;
 	}
+
+//	public List<Owner> getComment() {
+//		return comment;
+//	}
 
 	public int getTotal() {
 		return total;

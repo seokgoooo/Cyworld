@@ -13,7 +13,7 @@ import visitor.service.WriteVisitorRequest;
 import visitor.service.WriteVisitorService;
 
 public class WriteVisitorHandler implements CommandHandler {
-	private static final String FORM_VIEW = "/WEB-INF/view/newVisitorForm.jsp";
+	private static final String FORM_VIEW = "/WEB-INF/view/listVisitor.jsp";
 	private WriteVisitorService writeService = new WriteVisitorService();
 
 	@Override
@@ -44,7 +44,6 @@ public class WriteVisitorHandler implements CommandHandler {
 		if(!errors.isEmpty()) {
 			return FORM_VIEW;
 		}
-		
 		int newVisitorNo = writeService.write(writeReq);
 		req.setAttribute("newVisitorNo", newVisitorNo);
 		

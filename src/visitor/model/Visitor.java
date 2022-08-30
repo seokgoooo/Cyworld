@@ -3,12 +3,16 @@ package visitor.model;
 import java.util.Date;
 import java.util.Map;
 
+import owner.model.Owner;
+
 public class Visitor {
 	private Integer content_num;
 	private Integer user_num;
 	private String content;
 	private Date content_regdate;
 	private Date content_moddate;
+	private String name;
+	private Owner owner;
 		
 	public Visitor() {
 	}
@@ -22,6 +26,38 @@ public class Visitor {
 		this.content_moddate = content_moddate;
 	}
 
+
+
+	public Visitor(Integer content_num, Integer user_num, String content, Date content_regdate, Date content_moddate,
+			String name, Owner owner) {
+		this.content_num = content_num;
+		this.user_num = user_num;
+		this.content = content;
+		this.content_regdate = content_regdate;
+		this.content_moddate = content_moddate;
+		this.name = name;
+		this.owner = owner;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public Owner getOwner() {
+		return owner;
+	}
+
+
+	public void setOwner(Owner owner) {
+		this.owner = owner;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 
 	public Integer getUser_num() {

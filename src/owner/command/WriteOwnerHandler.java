@@ -13,7 +13,7 @@ import owner.service.WriteOwnerService;
 import visitor.model.Writer;
 
 public class WriteOwnerHandler implements CommandHandler {
-	private static final String FORM_VIEW = "/WEB-INF/view/newVisitorForm.jsp";
+	private static final String FORM_VIEW = "/WEB-INF/view/listVisitor.jsp";
 	private WriteOwnerService writeService = new WriteOwnerService();
 
 	@Override
@@ -38,7 +38,7 @@ public class WriteOwnerHandler implements CommandHandler {
 		req.setAttribute("errors", errors);
 		
 		User user = (User) req.getSession(false).getAttribute("authUser");
-		WriteOwnerRequest writeReq = createWriteRequest(req);
+		WriteOwnerRequest writeReq = createWriteRequest(user, req);
 		writeReq.validate(errors);
 		
 		if(!errors.isEmpty()) {
@@ -48,13 +48,13 @@ public class WriteOwnerHandler implements CommandHandler {
 		int newOwnerNo = writeService.write(writeReq);
 		req.setAttribute("newOwnerNo", newOwnerNo);
 		
-		return "/owner/owner.do";
+		return "/visitor/list.do";
 		
 	}
 	
-	private WriteOwnerRequest createWriteRequest(HttpServletRequest req) {
+	private WriteOwnerRequest createWriteRequest(User user, HttpServletRequest req) {
 		return new WriteOwnerRequest(
-				new Writer(1, "name"),
+				new Writer(user.getNum(), user.getName()),
 				req.getParameter("comment"));
 	}
 }
