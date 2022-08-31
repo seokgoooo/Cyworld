@@ -64,15 +64,19 @@
 	
 	#contenttop {
 		width: 100%;
+		height: 30px;
 		background-color: #ddd;
 	}
 	
 	#contentdate {
 		float: right;
+		font-family: 'Nanum Gothic', sans-serif;
+		font-size: 13px;
+		margin: 8px 10px 0px 0px;
 	}
 	
 	#mainprofile {
-		background-color:black;
+		background-color:white;
 		width: 150px;
 		height: 150px;
 	}
@@ -80,7 +84,7 @@
 	#maincontent {
 		width: 357px;
 		height: 150px;
-		background-color: gray;
+		background-color: white;
 		overflow:auto; 
 		scrollbar-width: none;
 		display: flex;
@@ -109,12 +113,12 @@
 		margin: 0px 0px 0px 10px;
 	}
 	
+	
 	#commentdate {
 		float: right;
-	}
-	
-	#contentnum {
-		margin: 0px 0px 0px 10px;
+		font-family: 'Nanum Gothic', sans-serif;
+		font-size: 13px;
+		margin: 3px 10px 0px 0px;
 	}
 	
 	.upload_comment {
@@ -154,6 +158,15 @@
 		position: relative;
 		background-color: #ddd;
 		height: 100px;
+	}
+	
+	
+	#contentnum {
+		margin: 50px 0px 0px 10px;
+	}
+	
+	#contentname {
+		margin: 50px 0px 0px 0px;
 	}
 	
 </style>
@@ -244,8 +257,8 @@
 								<c:forEach var="visitor" items="${ visitorPage.content }">
 								  <div id="contentlist">
 								  	<div id="contenttop">
-										<span id="contentnum" class="content">${ visitor.content_num }</span>
-										<span class="content">${ visitor.name }</span>
+										<span id="contentnum" class="contenttop">${ visitor.content_num }</span>
+										<span id="contentname" class="contenttop">${ visitor.name }</span>
 										<span id="contentdate" class="content">${ visitor.content_regdate }</span>
 									</div>
 									<div id="contentdiv">
