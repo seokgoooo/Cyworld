@@ -2,7 +2,11 @@ package visitor.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+
+import com.mysql.cj.protocol.a.LocalDateTimeValueEncoder;
 
 import visitor.service.WriteVisitorRequest;
 import jdbc.JdbcUtil;
@@ -18,30 +22,35 @@ public class WriteVisitorService {
 		try {
 			conn = ConnectionProvider.getConnection();
 			conn.setAutoCommit(false);
-			
+
 			Visitor visitor = toVisitor(req);
 			Visitor savedVisitor = visitorDao.insert(conn, visitor);
-			if(savedVisitor == null) {
+			if (savedVisitor == null) {
 				throw new RuntimeException("fail to insert visitor");
 			}
-			
+
 			conn.commit();
-			
+
 			return savedVisitor.getContent_num();
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			JdbcUtil.rollback(conn);
 			throw new RuntimeException(e);
-		} catch(RuntimeException e) {
+		} catch (RuntimeException e) {
 			JdbcUtil.rollback(conn);
 			throw e;
 		} finally {
 			JdbcUtil.close(conn);
 		}
 	}
-	
+
 	private Visitor toVisitor(WriteVisitorRequest req) {
-		Date now = new Date();
-		return new Visitor(null, req.getUser_id(), req.getContent(), now, now);
+		LocalDateTime localDateTime = LocalDateTime.now();
+		String localDateTimeFormat = localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS"));
+		return new Visitor(null,
+				req.getWriter().getUser_num(),
+				req.getContent(),
+				localDateTimeFormat,
+				localDateTimeFormat);
 	}
-	
+
 }

@@ -3,55 +3,83 @@ package photo.model;
 import java.util.Date;
 
 public class Photo {
-	private Integer photoNum;
-	private Uploader uploader;
+	private int number;// PK
 	private String title;
 	private Date regDate;
 	private Date modDate;
-	private String userId;
-	private int readCount;
+	private String url;
+	private String content;
+	private int user_num;// FK
 
-	public Photo(Integer photoNum, Uploader uploader, String title, Date regDate, Date modDate, int readCount) {
-		this.photoNum = photoNum;
-		this.uploader = uploader;
+	public Photo() {
+
+	}
+
+	public Photo(int number, String title, Date regDate, Date modDate, String url, String content, int user_num) {
+		super();
+		this.number = number;
 		this.title = title;
 		this.regDate = regDate;
 		this.modDate = modDate;
-		this.readCount = readCount;
+		this.url = url;
+		this.content = content;
+		this.user_num = user_num;
 	}
 
-	public Photo(Integer photoNum, String title, Date regDate, Date modDate, String userId) {
-		this.photoNum = photoNum;
-		this.title = title;
-		this.regDate = regDate;
-		this.modDate = modDate;
+	public int getNumber() {
+		return number;
 	}
 
-	public Integer getPhotoNum() {
-		return photoNum;
-	}
-
-	public Uploader getUploader() {
-		return uploader;
+	public void setNumber(int number) {
+		this.number = number;
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public Date getRegDate() {
 		return regDate;
+	}
+
+	public void setRegDate(Date regDate) {
+		this.regDate = regDate;
 	}
 
 	public Date getModDate() {
 		return modDate;
 	}
 
-	public String getUserId() {
-		return userId;
+	public void setModDate(Date modDate) {
+		this.modDate = modDate;
 	}
 
-	public int getReadCount() {
-		return readCount;
+	public String getUrl() {
+		return url;
 	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public int getUser_num() {
+		return user_num;
+	}
+
+	public void setUser_num(int user_num) {
+		this.user_num = user_num;
+	}
+
 }

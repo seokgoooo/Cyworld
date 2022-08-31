@@ -9,17 +9,16 @@ import visitor.service.VisitorPage;
 
 public class ListVisitorHandler implements CommandHandler {
 	private ListVisitorService listService = new ListVisitorService();
-	
+
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		String pageNoVal = req.getParameter("pageNo");
 		int pageNo = 1;
-		if(pageNoVal != null) {
+		if (pageNoVal != null) {
 			pageNo = Integer.parseInt(pageNoVal);
 		}
 		VisitorPage visitorPage = listService.getVisitorPage(pageNo);
 		req.setAttribute("visitorPage", visitorPage);
 		return "/WEB-INF/view/listVisitor.jsp";
 	}
-
 }

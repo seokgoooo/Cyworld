@@ -12,15 +12,28 @@ public class LoginService {
 
 	public User login(String id, String password) {
 		try (Connection conn = ConnectionProvider.getConnection()) {
+			
 			Member member = memberDao.selectById(conn, id);
+			
 			if (member == null) {
 				throw new LoginFailException();
 			}
+			
 			if (!member.matchPassword(password)) {
 				throw new LoginFailException();
 			}
-			return new User(member.getId(), member.getName(), member.getGender(), member.getImg_path(),
-					member.getTitle());
+			
+			return new User(
+					member.getNum(), 
+					member.getId(),
+					member.getName(),
+					member.getGender(),
+					member.getRegdate(), 
+					member.getImg_path(),
+					member.getTitle(), 
+					member.getProfile(), 
+					member.getMenu(), 
+					member.getPw());
 
 		} catch (SQLException e) {
 			throw new RuntimeException(e);

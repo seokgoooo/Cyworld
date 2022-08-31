@@ -6,12 +6,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import auth.service.User;
 import mvc.command.CommandHandler;
 import owner.service.WriteOwnerRequest;
 import owner.service.WriteOwnerService;
+import visitor.model.Writer;
 
 public class WriteOwnerHandler implements CommandHandler {
-	private static final String FORM_VIEW = "/WEB-INF/view/newVisitorForm.jsp";
+	private static final String FORM_VIEW = "/WEB-INF/view/listVisitor.jsp";
 	private WriteOwnerService writeService = new WriteOwnerService();
 
 	@Override
@@ -35,7 +37,9 @@ public class WriteOwnerHandler implements CommandHandler {
 		Map<String, Boolean> errors = new HashMap<>();
 		req.setAttribute("errors", errors);
 		
-		WriteOwnerRequest writeReq = createWriteRequest(req);
+		User user = (User) req.getSession(false).getAttribute("authUser");
+		WriteOwnerRequest writeReq = createWriteRequest(user, req);
+		System.out.println(writeReq.getContent_num());
 		writeReq.validate(errors);
 		
 		if(!errors.isEmpty()) {
@@ -45,13 +49,13 @@ public class WriteOwnerHandler implements CommandHandler {
 		int newOwnerNo = writeService.write(writeReq);
 		req.setAttribute("newOwnerNo", newOwnerNo);
 		
-		return "/WEB-INF/view/newVisitorSuccess.jsp";
+		return "/visitor/list.do";
 		
 	}
 	
-	private WriteOwnerRequest createWriteRequest(HttpServletRequest req) {
+	private WriteOwnerRequest createWriteRequest(User user, HttpServletRequest req) {
 		return new WriteOwnerRequest(
-				Integer.valueOf(req.getParameter("content_num")),
-				req.getParameter("comment"));
+				new Writer(user.getNum(), user.getName()),
+				req.getParameter("comment"), Integer.valueOf(req.getParameter("content_num")));
 	}
 }

@@ -11,34 +11,31 @@ import java.util.Date;
 import java.util.List;
 
 import jdbc.JdbcUtil;
+import owner.model.Owner;
 import visitor.model.Visitor;
 
 public class VisitorDAO {
-	
+
 	public Visitor insert(Connection conn, Visitor visitor) throws SQLException {
 		PreparedStatement pstmt = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("insert into content"
-					+ "(user_id, content, content_regdate, content_moddate)"
-					+ "values (?, ?, ?, ?)");
-			pstmt.setString(1, visitor.getUser_id());
-			pstmt.setString(2, visitor.getContent());
-			pstmt.setTimestamp(3, toTimestamp(visitor.getContent_regdate()));
-			pstmt.setTimestamp(4, toTimestamp(visitor.getContent_moddate()));
+			pstmt = conn.prepareStatement("insert into visitor_content"
+					+ "(content, content_regdate, content_moddate, user_num)" + "values (?, ?, ?, ?)");
+			pstmt.setString(1, visitor.getContent());
+			pstmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+			pstmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+			pstmt.setInt(4, visitor.getUser_num());
 			int insertedCount = pstmt.executeUpdate();
-			
-			if(insertedCount > 0) {
+
+			if (insertedCount > 0) {
 				stmt = conn.createStatement();
-				rs = stmt.executeQuery("SELECT last_insert_id() from content");
-				if(rs.next()) {
+				rs = stmt.executeQuery("SELECT last_insert_id() from visitor_content");
+				if (rs.next()) {
 					Integer newNum = rs.getInt(1);
-					return new Visitor(newNum, 
-							visitor.getUser_id(), 
-							visitor.getContent(), 
-							visitor.getContent_regdate(), 
-							visitor.getContent_moddate());
+					return new Visitor(newNum, visitor.getUser_num(), visitor.getContent(),
+							visitor.getContent_regdate(), visitor.getContent_moddate());
 				}
 			}
 			return null;
@@ -48,14 +45,14 @@ public class VisitorDAO {
 			JdbcUtil.close(pstmt);
 		}
 	}
-	
+
 	public int selectCount(Connection conn) throws SQLException {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT count(*) from content");
-			if(rs.next()) {
+			rs = stmt.executeQuery("SELECT count(*) from visitor_content");
+			if (rs.next()) {
 				return rs.getInt(1);
 			}
 			return 0;
@@ -64,17 +61,18 @@ public class VisitorDAO {
 			JdbcUtil.close(stmt);
 		}
 	}
-	
+
 	public List<Visitor> select(Connection conn, int startRow, int size) throws SQLException {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("SELECT * from content order by content_num desc limit ?, ?");
+			pstmt = conn.prepareStatement(
+					"SELECT A.*, B.comment_num, B.comment, B.comment_regdate, B.comment_moddate FROM (SELECT B.*, A.name FROM users AS A INNER JOIN visitor_content AS B on A.num = B.user_num) AS A LEFT JOIN visitor_comment AS B on A.content_num = B.content_num ORDER BY content_num DESC limit ?, ?");
 			pstmt.setInt(1, startRow);
 			pstmt.setInt(2, size);
 			rs = pstmt.executeQuery();
 			List<Visitor> result = new ArrayList<Visitor>();
-			while(rs.next()) {
+			while (rs.next()) {
 				result.add(convertVisitor(rs));
 			}
 			return result;
@@ -84,25 +82,66 @@ public class VisitorDAO {
 		}
 	}
 
-	private Visitor convertVisitor(ResultSet rs) throws SQLException {
-		return new Visitor(
-		rs.getInt("content_num"),
-		rs.getString("user_id"),
-		rs.getString("content"),
-		toDate(rs.getTimestamp("content_regdate")),
-		toDate(rs.getTimestamp("content_moddate")));
+	// 새로 추가한부분
+	public List<Owner> selectOwner(Connection conn) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement("call fullcontent()");
+			rs = pstmt.executeQuery();
+			List<Owner> owner = new ArrayList<Owner>();
+			while (rs.next()) {
+				owner.add(convertOwner(rs));
+			}
+			return owner;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
 	}
 
+//	public List<VisitorRequest> selectWriteVisitor(Connection conn, int startRow, int size) throws SQLException {
+//		PreparedStatement pstmt = null;
+//		ResultSet rs = null;
+//		try {
+//			pstmt = conn.prepareStatement("SELECT B.*, A.name FROM users  AS A INNER JOIN visitor_content AS B on A.num = B.user_num desc limit ?, ?");
+//			pstmt.setInt(1, startRow);
+//			pstmt.setInt(2, size);
+//			rs = pstmt.executeQuery();
+//			List<WriteVisitorRequest> result = new ArrayList<WriteVisitorRequest>();
+//			while(rs.next()) {
+//				result.add(convertWriteVisitor(rs));
+//			}
+//			return result;
+//		} finally {
+//			JdbcUtil.close(rs);
+//			JdbcUtil.close(pstmt);
+//		}
+//	}
+
+	private Visitor convertVisitor(ResultSet rs) throws SQLException {
+		return new Visitor(rs.getInt("content_num"), rs.getInt("user_num"), rs.getString("content"),
+				rs.getString("content_regdate"), rs.getString("content_moddate"), rs.getString("name"),
+				convertOwner(rs));
+	}
+
+	private Owner convertOwner(ResultSet rs) throws SQLException {
+		return new Owner(rs.getInt("comment_num"), rs.getString("comment"), rs.getString("comment_regdate"),
+				rs.getString("comment_moddate"), rs.getInt("content_num"), rs.getString("name"));
+	}
+
+//	private VisitorRequest convertWriteVisitor(ResultSet rs) throws SQLException {
+//		return new VisitorRequest(new Writer(Integer.valueOf(rs.getString("user_num")), rs.getString("name")), convertVisitor(rs));
+//	}
 
 	private Timestamp toTimestamp(Date date) {
 		return new Timestamp(date.getTime());
 	}
-	
-	
+
 	private Date toDate(Timestamp timestamp) {
 		return new Date(timestamp.getTime());
 	}
-	
+
 }
 
 //	private ContentDAO() { }

@@ -6,12 +6,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import auth.service.User;
 import mvc.command.CommandHandler;
+import visitor.model.Writer;
 import visitor.service.WriteVisitorRequest;
 import visitor.service.WriteVisitorService;
 
 public class WriteVisitorHandler implements CommandHandler {
-	private static final String FORM_VIEW = "/WEB-INF/view/newVisitorForm.jsp";
+	private static final String FORM_VIEW = "/WEB-INF/view/listVisitor.jsp";
 	private WriteVisitorService writeService = new WriteVisitorService();
 
 	@Override
@@ -35,23 +37,23 @@ public class WriteVisitorHandler implements CommandHandler {
 		Map<String, Boolean> errors = new HashMap<>();
 		req.setAttribute("errors", errors);
 		
-		WriteVisitorRequest writeReq = createWriteRequest(req);
+		User user = (User) req.getSession(false).getAttribute("authUser");
+		WriteVisitorRequest writeReq = createWriteRequest(user, req);
 		writeReq.validate(errors);
 		
 		if(!errors.isEmpty()) {
 			return FORM_VIEW;
 		}
-		
 		int newVisitorNo = writeService.write(writeReq);
 		req.setAttribute("newVisitorNo", newVisitorNo);
 		
-		return "/WEB-INF/view/newVisitorSuccess.jsp";
+		return "/visitor/list.do";
 		
 	}
 	
-	private WriteVisitorRequest createWriteRequest(HttpServletRequest req) {
+	private WriteVisitorRequest createWriteRequest(User user, HttpServletRequest req) {
 		return new WriteVisitorRequest(
-				req.getParameter("user_id"),
+				new Writer(user.getNum(), user.getName()),
 				req.getParameter("content"));
 	}
 }

@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import mvc.command.CommandHandler;
 import owner.service.ListOwnerService;
-import owner.service.OwnerPage;
+import visitor.service.VisitorPage;
 
 public class ListOwnerHandler implements CommandHandler{
 	private ListOwnerService listService = new ListOwnerService();
@@ -17,8 +17,8 @@ public class ListOwnerHandler implements CommandHandler{
 		if(pageNoVal != null) {
 			pageNo = Integer.parseInt(pageNoVal);
 		}
-		OwnerPage ownerPage = listService.getOwnerPage(pageNo);
+		VisitorPage ownerPage = listService.getOwnerPage(pageNo);
 		req.setAttribute("ownerPage", ownerPage);
-		return "/WEB-INF/view/listOwner.jsp";
+		return "/WEB-INF/view/listVisitor.jsp";
 	}
 }

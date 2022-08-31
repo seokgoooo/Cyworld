@@ -27,7 +27,7 @@ public class ChangePasswordService {
 			}
 
 			member.changePassword(newPwd);
-			memberDao.update(conn, member);
+			memberDao.changePw(conn, member);
 			conn.commit();
 
 		} catch (SQLException e) {

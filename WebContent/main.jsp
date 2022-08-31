@@ -10,13 +10,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<c:if test="${ empty authUser.title }">
-	<title>${ authUser.id }님의미니홈피입니다.</title>
-</c:if>
-
-<c:if test="${ not empty authUser.title }">
-	<title>${ authUser.title }</title>
-</c:if>
+<title>${ authUser.title }</title>
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/font.css" />
 <link rel="stylesheet"
@@ -29,24 +23,10 @@
 			<div class="page">
 				<div class="home">
 					<div class="upside">
-						<c:if test="${ empty authUser.title }">
-							<br>
-							<strong><span style="color: coral;"></span></strong>
-							&emsp;&emsp;&emsp; &emsp;
-							<span class="title"> ${ authUser.id }님의미니홈피입니다.</span>
-							&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-						</c:if>
-
-						<c:if test="${ not empty authUser.title }">
-							<br>
-							<strong><span style="color: coral;"></span></strong>
-							&emsp;&emsp;&emsp; &emsp;
-							<span class="title">${ authUser.title }</span>
-							&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-						</c:if>
-
-						<a href="#"> <span class="updated_news_blue"
-							style="float: right">&nbsp;EDIT&nbsp;</span></a>
+						<br> <strong><span style="color: coral;"></span></strong>
+						&emsp;&emsp;&emsp; &emsp; <span class="title">${ authUser.title }</span>
+						&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; <a href="edit.jsp"> <span
+							class="updated_news_blue" style="float: right">&nbsp;EDIT&nbsp;</span></a>
 					</div>
 
 
@@ -54,20 +34,14 @@
 						<div class="profile">
 							<div class="profile_1">
 								<!-- 회원가입할때 등록한 사진을 출력 -->
-								<c:if test="${ empty authUser.img }">
-									<img class="profile_image" src="./image/m.jpg" />
-								</c:if>
+								<img class="profile_image" src="${authUser.img}" />
 
-								<c:if test="${ not empty authUser.img }">
-									<img class="profile_image" src="../upload/${authUser.img}" />
-								</c:if>
-
-								<a href="#"> <span class="updated_news_blue"
-									style="float: right">&nbsp;EDIT&nbsp;</span></a>
+								<!-- <a href="#"> <span class="updated_news_blue"
+									style="float: right">&nbsp;EDIT&nbsp;</span></a> -->
 							</div>
 
 							<div class="profile_2">
-								<p>자기소개 페이지로 쓸 공간 무슨 태그로 넣어야할까</p>
+								<p>${ authUser.profile }</p>
 							</div>
 
 							<div class="profile_3">
@@ -152,5 +126,12 @@
 			</div>
 		</div>
 	</div>
+
+
+
+
+
+
+
 </body>
 </html>

@@ -17,21 +17,12 @@
 
 		<form action="login.do" method="post">
 
-			<input type="text"
-			 class="form-control"
-			 id="floatingId"
-			 placeholder="아이디"
-			 name="id"
-			 value="${ param.id }"
-			 required="required"/>
-			 
-			 <input
-				type="password"
-				class="form-control"
-				id="floatingPassword"
-				placeholder="비밀번호"
-				name="password"
-				required="required"/>
+			<input type="text" class="form-control" id="floatingId"
+				placeholder="아이디" name="id" value="${ param.id }"
+				required="required" />
+			 <input type="password" class="form-control"
+				id="floatingPassword" placeholder="비밀번호" name="password"
+				required="required" />
 
 			<c:if test="${ errors.idOrPwNotMatch }"> 아이디와 암호가 일치하지 않습니다.	</c:if>
 			<c:if test="${ errors.id }"> 아이디를 입력하세요. </c:if>
@@ -48,7 +39,8 @@
 		</form>
 
 		<a href="join.do">
-			<button class="btn btn-lg btn-secondary btn-inline-block" type="submit">회원가입</button>
+			<button class="btn btn-lg btn-secondary btn-inline-block"
+				type="submit">회원가입</button>
 		</a>
 
 		<p class="mt-5 mb-3 text-muted">&copy; 2022</p>

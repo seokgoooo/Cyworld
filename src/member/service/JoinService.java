@@ -24,9 +24,12 @@ public class JoinService {
 				throw new DuplicateIdException();
 			}
 
-			memberDao.insert(conn, new Member(joinReq.getId(), joinReq.getPassword(), joinReq.getName(),
-					joinReq.getGender(), new Date(), null, joinReq.getId() + "님의 미니홈피입니다."));
-
+			memberDao.insert(conn,
+				new Member(joinReq.getId(),
+					joinReq.getPassword(),
+					joinReq.getName(),
+					joinReq.getGender(),
+					new Date()));
 			conn.commit();
 		} catch (SQLException e) {
 			JdbcUtil.rollback(conn);

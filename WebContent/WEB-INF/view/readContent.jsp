@@ -29,6 +29,15 @@
 			<td>내용</td>
 			<td><u:pre value="${contentData.content}" /></td>
 		</tr>
+
+
+
+
+
+
+
+
 	</table>
+
 </body>
 </html>
