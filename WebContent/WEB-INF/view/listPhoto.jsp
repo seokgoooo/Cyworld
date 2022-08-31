@@ -117,6 +117,9 @@
 						<div class="home_contents">
 							<div class="photo_contents">
 								<!-- 사진을 등록하는 페이지로 이동하는 버튼 -->
+								<c:if test="${photoPage.hasNoPhoto()}">
+								<p>게시글이 없습니다. 등록부탁드립니다.</p>
+								</c:if>
 								<input type="button" style="float: right;" value="등록하기"
 									onclick="location.href='../photo/write.do'">
 								<c:forEach var="photo" items="${photoPage.content}">
