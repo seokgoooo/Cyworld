@@ -3,12 +3,14 @@ package photo.service;
 import java.util.List;
 
 import photo.model.Photo;
+import reply.model.PhotoComment;
 
 //게시글 목록을 제공하는 서비스구현
 public class PhotoPage {
 	private int total;
 	private int currentPage;
 	private List<Photo> content;
+	private List<PhotoComment> comment;
 	private int totalPages;
 	private int startPage;
 	private int endPage;

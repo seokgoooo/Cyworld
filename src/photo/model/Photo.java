@@ -3,68 +3,83 @@ package photo.model;
 import java.util.Date;
 
 public class Photo {
-	
-	private int photoNum;
+	private int number;// PK
 	private String title;
 	private Date regDate;
 	private Date modDate;
-	private String userId;
-	private int readCount;
-	
+	private String url;
+	private String content;
+	private int user_num;// FK
+
 	public Photo() {
-		
+
 	}
-	public Photo(String title, Date regDate, Date modDate, String userId, int readCount) {
-		
+
+	public Photo(int number, String title, Date regDate, Date modDate, String url, String content, int user_num) {
+		super();
+		this.number = number;
 		this.title = title;
 		this.regDate = regDate;
 		this.modDate = modDate;
-		this.userId = userId;
-		this.readCount = readCount;
+		this.url = url;
+		this.content = content;
+		this.user_num = user_num;
 	}
-	public int getPhotoNum() {
-		return photoNum;
+
+	public int getNumber() {
+		return number;
 	}
-	public void setPhotoNum(int photoNum) {
-		this.photoNum = photoNum;
+
+	public void setNumber(int number) {
+		this.number = number;
 	}
+
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 	public Date getRegDate() {
 		return regDate;
 	}
+
 	public void setRegDate(Date regDate) {
 		this.regDate = regDate;
 	}
+
 	public Date getModDate() {
 		return modDate;
 	}
+
 	public void setModDate(Date modDate) {
 		this.modDate = modDate;
 	}
-	public String getUserId() {
-		return userId;
+
+	public String getUrl() {
+		return url;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
-	public int getReadCount() {
-		return readCount;
+
+	public String getContent() {
+		return content;
 	}
-	public void setReadCount(int readCount) {
-		this.readCount = readCount;
+
+	public void setContent(String content) {
+		this.content = content;
 	}
-	@Override
-	public String toString() {
-		return "Photo [photoNum=" + photoNum + ", title=" + title + ", regDate=" + regDate + ", modDate=" + modDate
-				+ ", userId=" + userId + ", readCount=" + readCount + "]";
+
+	public int getUser_num() {
+		return user_num;
 	}
-	
-	
-	
+
+	public void setUser_num(int user_num) {
+		this.user_num = user_num;
+	}
 
 }

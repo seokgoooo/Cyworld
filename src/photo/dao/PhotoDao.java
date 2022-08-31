@@ -10,12 +10,74 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
 import photo.model.Photo;
 
 public class PhotoDao {
-	// 게시글 개수를 구하기위한 selectCount 메소드
+	private PhotoDao() {
+		
+	}
+	private static PhotoDao instance = new PhotoDao();
+	
+	public static PhotoDao getInstance() {
+		return instance;
+	}
+	
+	public List<Photo> selectPhoto() {
+		String sql = "select*from photo order by photo_num desc";
+		List<Photo> list = new ArrayList<Photo>();
+		try(Connection conn = ConnectionProvider.getConnection();) {
+		    Statement stmt = conn.createStatement();
+		    ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()) {
+				Photo photo = new Photo();
+				photo.setNumber(rs.getInt("photo_num"));// 사진번호
+				photo.setTitle(rs.getString("photo_title"));// 사진제목
+				photo.setContent(rs.getString("content"));//내용
+				toDate(rs.getTimestamp("photo_regdate"));
+				toDate(rs.getTimestamp("photo_moddate"));
+				photo.setUrl(rs.getString("url"));//사진 url
+				photo.setUser_num(rs.getInt("user_num"));//유저아이디
+			}
+				
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;	
+			
+	}
+	private Date toDate(Timestamp date) {
+		return date == null? null: new Date(date.getTime());
+		
+	}
+
+	public void deletePhoto(Integer photo_num) {
+		String sql = "delete from photo where photo_num = ?";//사진첩에 작성한  게시물을 삭제하는 쿼리문
+		try (Connection conn = ConnectionProvider.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);) {
+			pstmt.setInt(1, photo_num);
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void updatePhoto(Photo photo) {
+		String sql = "update photo set photo_title =?, content=?, url=?, photo_moddate=?, where photo_num=?";//사진첩의 내용을 수정하는 쿼리문
+		try (Connection conn = ConnectionProvider.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);) {
+			pstmt.setString(1, photo.getTitle());
+			pstmt.setString(2, photo.getContent());
+			pstmt.setString(3, photo.getUrl());
+			pstmt.setTimestamp(4, new Timestamp(photo.getModDate().getTime()));
+			pstmt.setInt(5, photo.getNumber());
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public int selectCount(Connection conn) throws SQLException {
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -28,71 +90,70 @@ public class PhotoDao {
 				return rs.getInt(1);
 			}
 			return 0;
-
 		} finally {
-			JdbcUtil.close(rs);
-			JdbcUtil.close(stmt);
+			rs.close();
+			stmt.close();
+
 		}
-
 	}
-
+	//페이지 설정
 	public List<Photo> select(Connection conn, int startRow, int size) throws SQLException {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
 		try {
-			pstmt = conn.prepareStatement("select * from photo order by photo_num desc limit ?,?");
+			pstmt = conn.prepareStatement("select * from photo " + "order by photo_num desc limit ?, ?");
 			pstmt.setInt(1, startRow);
 			pstmt.setInt(2, size);
 			rs = pstmt.executeQuery();
-
 			List<Photo> result = new ArrayList<Photo>();
 			while (rs.next()) {
-				result.add(convertPhoto(rs));
+				result.add(new Photo(rs.getInt("photo_num"), 
+						rs.getString("photo_title"), 
+						toDate(rs.getTimestamp("photo_regdate")), 
+						toDate(rs.getTimestamp("photo_moddate")), 
+						rs.getString("url"), 
+						rs.getString("content"), 
+						rs.getInt("user_num")));
 			}
 			return result;
+
 		} finally {
-			JdbcUtil.close(rs);
-			JdbcUtil.close(pstmt);
+			pstmt.close();
+			rs.close();
 		}
 	}
-
-	private Photo convertPhoto(ResultSet rs) throws SQLException {
-		return new Photo(rs.getString("photo_title"), toDate(rs.getTimestamp("photo_regDate")),
-				toDate(rs.getTimestamp("photo_modDate")), rs.getString("user_Id"), rs.getInt("readcount"));
-
-	}
-
-	private Date toDate(Timestamp timestamp) {
-		return new Date(timestamp.getTime());
-	}
-
-	public Photo selectById(Connection conn, int no) throws SQLException {
-		PreparedStatement pstmt = null;
+	//업데이트 할 메소드 
+	public Photo selectProductPhotoNum(Integer photo_num) {
+		String sql = "select* from photo where photo_num=?";//사진첩번호와 같은 사진첩의 데이터를 가져오는 쿼리문
+		Photo photo = null;
 		ResultSet rs = null;
-
-		try {
-			pstmt = conn.prepareStatement("select * from photo where photo_num=?");
+		try(Connection conn = ConnectionProvider.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);) {
+			pstmt.setInt(1, photo_num);
 			rs = pstmt.executeQuery();
-
-			Photo photo = null;
-			if (rs.next()) {
-				photo = convertPhoto(rs);
+			if(rs.next()) {
+				photo = new Photo();
+				photo.setNumber(rs.getInt("photo_num"));
+				photo.setTitle(rs.getString("photo_title"));
+				toDate(rs.getTimestamp("photo_regdate"));
+				toDate(rs.getTimestamp("photo_moddate"));
+				photo.setUrl(rs.getString("url"));
+				photo.setUser_num(rs.getInt("user_num"));
+				photo.setContent(rs.getString("content"));
 			}
-			
-			return photo;
-		} finally {
-			JdbcUtil.close(rs);
-			JdbcUtil.close(pstmt);
-		}
-	}
-
-	public void increaseReadCount(Connection conn, int no) throws SQLException {
-		try (PreparedStatement pstmt = conn
-				.prepareStatement("update photo set readcount = readcount +1" + "where photo_num =?")) {
-			pstmt.setInt(1, no);
-			pstmt.executeUpdate();
-		}
+ 		} catch(Exception e) {
+ 			e.printStackTrace();
+ 		} finally {
+ 			try {
+				rs.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+ 			
+ 		}
+		return photo;
 	}
 
 }

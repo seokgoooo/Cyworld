@@ -38,6 +38,13 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.jfinal/cos -->
+		<dependency>
+			<groupId>com.jfinal</groupId>
+			<artifactId>cos</artifactId>
+			<version>2020.4</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
