@@ -118,6 +118,10 @@
 		margin: 0px 0px 0px 10px;
 	}
 	
+	#upload_comment {
+		
+	}
+	
 </style>
 
 </head>
@@ -215,13 +219,22 @@
 										<div id="maincontent" class="content">${ visitor.content }</div>
 									</div>
 								 </div>
-								 
-								 <div id="commentdiv">
-									 	<span id="commentid" class="comment">${ visitor.name } : </span>
-										<span id="maincomment" class="comment">${ visitor.owner.comment }</span>
-										<span id="commentdate" class="comment">${ visitor.owner.comment_regdate }</span>
-								 </div>
-
+								 <c:if test="${ visitor.owner.comment != null }">
+									 <div id="commentdiv">
+										 	<span id="commentid" class="comment">${ visitor.name } : </span>
+											<span id="maincomment" class="comment">${ visitor.owner.comment }</span>
+											<span id="commentdate" class="comment">${ visitor.owner.comment_regdate }</span>
+									 </div>
+								 </c:if>
+								 <%-- 댓글 등록 부분 --%>
+								 <div class="upload_comment">
+									<form action="write.do" method="post">
+										<p>
+											<textarea id="comment" name="comment" rows="3" cols="60"  onclick="this.value='';">${ param.comment }</textarea>
+										</p>
+										<input id="uploadBtn2" type="submit" value="확인"/>
+									</form>
+							    </div>
 								</c:forEach>
 								<c:if test="${ visitorPage.hasVisitor() }">
 										<div id="page">
