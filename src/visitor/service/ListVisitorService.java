@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.google.gson.Gson;
+
 import jdbc.connection.ConnectionProvider;
 import owner.model.Owner;
 import visitor.dao.VisitorDAO;
@@ -18,9 +20,9 @@ public class ListVisitorService {
 			int total = visitorDao.selectCount(conn);
 			List<Visitor> content = visitorDao.select(
 					conn, (pageNum - 1) * size, size);
-			List<Owner> owner = visitorDao.selectOwner(conn);
+			System.out.println(new Gson().toJson(content));
 //			List<String> name = visitorDao.selectName(conn); // 새로추가한부분
-			return new VisitorPage(total, pageNum, size, content, owner);
+			return new VisitorPage(total, pageNum, size, content);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}

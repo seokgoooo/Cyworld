@@ -52,7 +52,6 @@
         border: solid 1px gray;
 		border-radius: 5px;
 		font-size: 13px;
-		resize: both;
 		resize: none;
 	}
 	
@@ -118,8 +117,43 @@
 		margin: 0px 0px 0px 10px;
 	}
 	
-	#upload_comment {
+	.upload_comment {
+		background-color: #ddd;
+		margin: 30px 15px 0px 15px;
+		height: 70px;
 		
+	}
+	
+	#uploadBtn2 {
+		position: relative;
+		left: 45px;
+		bottom: 10px;
+		width: 50px;
+		height: 50px;
+		background-color: white;
+		border: solid 1px gray;
+		border-radius: 5px;
+	}
+	
+	#comment {
+		position: relative;
+		left: 20px;
+		top: 10px;
+        box-sizing: border-box;
+        border: solid 1px gray;
+		border-radius: 5px;
+		font-size: 13px;
+		resize: none;
+	}
+	
+	#content_num {
+		display: none;
+	}
+	
+	#commentdiv {
+		position: relative;
+		background-color: #ddd;
+		height: 100px;
 	}
 	
 </style>
@@ -221,20 +255,22 @@
 								 </div>
 								 <c:if test="${ visitor.owner.comment != null }">
 									 <div id="commentdiv">
-										 	<span id="commentid" class="comment">${ visitor.name } : </span>
+										 	<span id="commentid" class="comment">${ visitor.owner.name } : </span>
 											<span id="maincomment" class="comment">${ visitor.owner.comment }</span>
-											<span id="commentdate" class="comment">${ visitor.owner.comment_regdate }</span>
+									        <span id="commentdate" class="comment">${ visitor.owner.comment_regdate }</span> <%-- 오너 날짜 보여주는부분 --%>
 									 </div>
 								 </c:if>
 								 <%-- 댓글 등록 부분 --%>
+								 <c:if test="${ visitor.owner.comment == null }">
 								 <div class="upload_comment">
-									<form action="write.do" method="post">
-										<p>
-											<textarea id="comment" name="comment" rows="3" cols="60"  onclick="this.value='';">${ param.comment }</textarea>
-										</p>
+									<form action="<%=request.getContextPath()%>/owner/newowner.do" method="post">
+											<input id="content_num" name="content_num" value="${ visitor.content_num }"/>
+											<textarea id="comment" name="comment" rows="3" cols="50"  onclick="this.value='';">${ param.comment }</textarea>
+										
 										<input id="uploadBtn2" type="submit" value="확인"/>
 									</form>
-							    </div>
+							     </div>
+								 </c:if>
 								</c:forEach>
 								<c:if test="${ visitorPage.hasVisitor() }">
 										<div id="page">

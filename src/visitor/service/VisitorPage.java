@@ -9,17 +9,15 @@ public class VisitorPage {
 	private int total;
 	private int currentPage;
 	private List<Visitor> content;
-	private List<Owner> comment;
 //	private List<String> name; // 새로추가한 부분
 	private int totalPages;
 	private int startPage;
 	private int endPage;
 	
-	public VisitorPage(int total, int currentPage, int size, List<Visitor> content, List<Owner> comment) {
+	public VisitorPage(int total, int currentPage, int size, List<Visitor> content) {
 		this.total = total;
 		this.currentPage = currentPage;
 		this.content = content;
-		this.comment = comment;
 //		this.name = name; // 새로 추가한부분
 		if(total == 0) {
 			totalPages = 0;

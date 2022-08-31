@@ -12,6 +12,7 @@ import java.util.List;
 
 import jdbc.JdbcUtil;
 import owner.model.Owner;
+import visitor.model.Visitor;
 
 public class OwnerDAO {
 
@@ -20,11 +21,12 @@ public class OwnerDAO {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("insert into visitor_comment (comment, comment_regdate, comment_moddate, content_num) values (?, ?, ?, ?)");
+			pstmt = conn.prepareStatement("insert into visitor_comment (comment, comment_regdate, comment_moddate, content_num, name) values (?, ?, ?, ?, ?)");
 			pstmt.setString(1, owner.getComment());
-			pstmt.setTimestamp(2, toTimestamp(owner.getComment_regdate()));
-			pstmt.setTimestamp(3, toTimestamp(owner.getComment_moddate()));
+			pstmt.setString(2, owner.getComment_regdate());
+			pstmt.setString(3, owner.getComment_moddate());
 			pstmt.setInt(4, owner.getContent_num());
+			pstmt.setString(5, owner.getName());
 			int insertedCount = pstmt.executeUpdate();
 			
 			if(insertedCount > 0) {
@@ -36,7 +38,8 @@ public class OwnerDAO {
 							owner.getComment(), 
 							owner.getComment_regdate(), 
 							owner.getComment_moddate(), 
-							owner.getContent_num());
+							owner.getContent_num(),
+							owner.getName());
 				}
 			}
 			return null;
@@ -63,17 +66,36 @@ public class OwnerDAO {
 		}
 	}
 	
-	public List<Owner> select(Connection conn, int startRow, int size) throws SQLException {
+//	public List<Owner> select(Connection conn, int startRow, int size) throws SQLException {
+//		PreparedStatement pstmt = null;
+//		ResultSet rs = null;
+//		try {
+//			pstmt = conn.prepareStatement("SELECT A.*, B.comment_num, B.comment FROM (SELECT B.*, A.name FROM users AS A INNER JOIN visitor_content AS B on A.num = B.user_num) AS A LEFT JOIN visitor_comment AS B on A.content_num = B.content_num ORDER BY content_num DESC limit ?, ?");
+//			pstmt.setInt(1, startRow);
+//			pstmt.setInt(2, size);
+//			rs = pstmt.executeQuery();
+//			List<Owner> result = new ArrayList<Owner>();
+//			while(rs.next()) {
+//				result.add(convertOwner(rs));
+//			}
+//			return result;
+//		} finally {
+//			JdbcUtil.close(rs);
+//			JdbcUtil.close(pstmt);
+//		}
+//	}
+	
+	public List<Visitor> select(Connection conn, int startRow, int size) throws SQLException {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("SELECT * from visitor_comment order by comment_num desc limit ?, ?");
+			pstmt = conn.prepareStatement("SELECT A.*, B.comment_num, B.comment FROM (SELECT B.*, A.name FROM users AS A INNER JOIN visitor_content AS B on A.num = B.user_num) AS A LEFT JOIN visitor_comment AS B on A.content_num = B.content_num ORDER BY content_num DESC limit ?, ?");
 			pstmt.setInt(1, startRow);
 			pstmt.setInt(2, size);
 			rs = pstmt.executeQuery();
-			List<Owner> result = new ArrayList<Owner>();
+			List<Visitor> result = new ArrayList<Visitor>();
 			while(rs.next()) {
-				result.add(convertOwner(rs));
+				result.add(convertVisitor(rs));
 			}
 			return result;
 		} finally {
@@ -82,13 +104,28 @@ public class OwnerDAO {
 		}
 	}
 
+
+	private Visitor convertVisitor(ResultSet rs) throws SQLException {
+		return new Visitor(
+		rs.getInt("content_num"),
+		rs.getInt("user_num"),
+		rs.getString("content"),
+		rs.getString("content_regdate"),
+		rs.getString("content_moddate"),
+		rs.getString("name"),
+		convertOwner(rs));
+	}
+	
+	
+	
 	private Owner convertOwner(ResultSet rs) throws SQLException {
 		return new Owner(
 		rs.getInt("comment_num"),
 		rs.getString("comment"),
-		toDate(rs.getTimestamp("comment_regdate")),
-		toDate(rs.getTimestamp("comment_moddate")),
-		rs.getInt("content_num"));
+		rs.getString("comment_regdate"),
+		rs.getString("comment_moddate"),
+		rs.getInt("content_num"),
+		rs.getString("name"));
 	}
 
 

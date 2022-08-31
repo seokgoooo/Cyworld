@@ -39,6 +39,7 @@ public class WriteOwnerHandler implements CommandHandler {
 		
 		User user = (User) req.getSession(false).getAttribute("authUser");
 		WriteOwnerRequest writeReq = createWriteRequest(user, req);
+		System.out.println(writeReq.getContent_num());
 		writeReq.validate(errors);
 		
 		if(!errors.isEmpty()) {
@@ -55,6 +56,6 @@ public class WriteOwnerHandler implements CommandHandler {
 	private WriteOwnerRequest createWriteRequest(User user, HttpServletRequest req) {
 		return new WriteOwnerRequest(
 				new Writer(user.getNum(), user.getName()),
-				req.getParameter("comment"));
+				req.getParameter("comment"), Integer.valueOf(req.getParameter("content_num")));
 	}
 }

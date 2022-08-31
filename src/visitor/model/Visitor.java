@@ -9,8 +9,8 @@ public class Visitor {
 	private Integer content_num;
 	private Integer user_num;
 	private String content;
-	private Date content_regdate;
-	private Date content_moddate;
+	private String content_regdate;
+	private String content_moddate;
 	private String name;
 	private Owner owner;
 		
@@ -18,7 +18,7 @@ public class Visitor {
 	}
 
 
-	public Visitor(Integer content_num, Integer user_num, String content, Date content_regdate, Date content_moddate) {
+	public Visitor(Integer content_num, Integer user_num, String content, String content_regdate, String content_moddate) {
 		this.content_num = content_num;
 		this.user_num = user_num;
 		this.content = content;
@@ -28,7 +28,7 @@ public class Visitor {
 
 
 
-	public Visitor(Integer content_num, Integer user_num, String content, Date content_regdate, Date content_moddate,
+	public Visitor(Integer content_num, Integer user_num, String content, String content_regdate, String content_moddate,
 			String name, Owner owner) {
 		this.content_num = content_num;
 		this.user_num = user_num;
@@ -87,19 +87,19 @@ public class Visitor {
 		this.content = content;
 	}
 
-	public Date getContent_regdate() {
+	public String getContent_regdate() {
 		return content_regdate;
 	}
 
-	public void setContent_regdate(Date content_regdate) {
+	public void setContent_regdate(String content_regdate) {
 		this.content_regdate = content_regdate;
 	}
 
-	public Date getContent_moddate() {
+	public String getContent_moddate() {
 		return content_moddate;
 	}
 
-	public void setContent_moddate(Date content_moddate) {
+	public void setContent_moddate(String content_moddate) {
 		this.content_moddate = content_moddate;
 	}
 

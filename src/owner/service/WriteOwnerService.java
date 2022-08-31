@@ -2,6 +2,8 @@ package owner.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import jdbc.JdbcUtil;
@@ -19,12 +21,13 @@ public class WriteOwnerService {
 			conn = ConnectionProvider.getConnection();
 			conn.setAutoCommit(false);
 			
-			Owner visitor = toOwner(req);
-			Owner savedOwner = ownerDao.insert(conn, visitor);
+			Owner owner = toOwner(req);
+			System.out.println("인서트 시작");
+			Owner savedOwner = ownerDao.insert(conn, owner);
 			if(savedOwner == null) {
 				throw new RuntimeException("fail to insert owner");
 			}
-			
+			System.out.println("인서트 끝");
 			conn.commit();
 			
 			return savedOwner.getComment_num();
@@ -40,7 +43,10 @@ public class WriteOwnerService {
 	}
 	
 	private Owner toOwner(WriteOwnerRequest req) {
-		Date now = new Date();
-		return new Owner(null, req.getComment(), now, now, req.getWriter().getUser_num());
+		LocalDateTime localDateTime = LocalDateTime.now();
+		String localDateTimeFormat = localDateTime.format(
+	            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS")
+	        );
+		return new Owner(null, req.getComment(), localDateTimeFormat, localDateTimeFormat, req.getContent_num(), req.getWriter().getName());
 	}
 }

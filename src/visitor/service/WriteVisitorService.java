@@ -2,7 +2,11 @@ package visitor.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+
+import com.mysql.cj.protocol.a.LocalDateTimeValueEncoder;
 
 import visitor.service.WriteVisitorRequest;
 import jdbc.JdbcUtil;
@@ -40,8 +44,11 @@ public class WriteVisitorService {
 	}
 	
 	private Visitor toVisitor(WriteVisitorRequest req) {
-		Date now = new Date();
-		return new Visitor(null, req.getWriter().getUser_num(), req.getContent(), now, now);
+		LocalDateTime localDateTime = LocalDateTime.now();
+		String localDateTimeFormat = localDateTime.format(
+	            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS")
+	        );
+		return new Visitor(null, req.getWriter().getUser_num(), req.getContent(), localDateTimeFormat, localDateTimeFormat);
 	}
 	
 }

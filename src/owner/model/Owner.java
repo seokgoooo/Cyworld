@@ -5,20 +5,30 @@ import java.util.Date;
 public class Owner {
 	private Integer comment_num;
 	private String comment;
-	private Date comment_regdate;
-	private Date comment_moddate;
+	private String comment_regdate;
+	private String comment_moddate;
 	private Integer content_num;
+	private String name;
 	
 	
 	public Owner() {
 	}
 
-	public Owner(Integer comment_num, String comment, Date comment_regdate, Date comment_moddate, Integer content_num) {
+	public Owner(Integer comment_num, String comment, String comment_regdate, String comment_moddate, Integer content_num, String name) {
 		this.comment_num = comment_num;
 		this.comment = comment;
 		this.comment_regdate = comment_regdate;
 		this.comment_moddate = comment_moddate;
 		this.content_num = content_num;
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Integer getComment_num() {
@@ -37,19 +47,19 @@ public class Owner {
 		this.comment = comment;
 	}
 
-	public Date getComment_regdate() {
+	public String getComment_regdate() {
 		return comment_regdate;
 	}
 
-	public void setComment_regdate(Date comment_regdate) {
+	public void setComment_regdate(String comment_regdate) {
 		this.comment_regdate = comment_regdate;
 	}
 
-	public Date getComment_moddate() {
+	public String getComment_moddate() {
 		return comment_moddate;
 	}
 
-	public void setComment_moddate(Date comment_moddate) {
+	public void setComment_moddate(String comment_moddate) {
 		this.comment_moddate = comment_moddate;
 	}
 

@@ -25,8 +25,8 @@ public class VisitorDAO {
 					+ "(content, content_regdate, content_moddate, user_num)"
 					+ "values (?, ?, ?, ?)");
 			pstmt.setString(1, visitor.getContent());
-			pstmt.setTimestamp(2, toTimestamp(visitor.getContent_regdate()));
-			pstmt.setTimestamp(3, toTimestamp(visitor.getContent_moddate()));
+			pstmt.setString(2, visitor.getContent_regdate());
+			pstmt.setString(3, visitor.getContent_moddate());
 			pstmt.setInt(4, visitor.getUser_num());
 			int insertedCount = pstmt.executeUpdate();
 			
@@ -70,7 +70,7 @@ public class VisitorDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("SELECT A.*, B.comment_num, B.comment FROM (SELECT B.*, A.name FROM users AS A INNER JOIN visitor_content AS B on A.num = B.user_num) AS A LEFT JOIN visitor_comment AS B on A.content_num = B.content_num ORDER BY content_num DESC limit ?, ?");
+			pstmt = conn.prepareStatement("SELECT A.*, B.comment_num, B.comment, B.comment_regdate, B.comment_moddate FROM (SELECT B.*, A.name FROM users AS A INNER JOIN visitor_content AS B on A.num = B.user_num) AS A LEFT JOIN visitor_comment AS B on A.content_num = B.content_num ORDER BY content_num DESC limit ?, ?");
 			pstmt.setInt(1, startRow);
 			pstmt.setInt(2, size);
 			rs = pstmt.executeQuery();
@@ -129,8 +129,8 @@ public class VisitorDAO {
 		rs.getInt("content_num"),
 		rs.getInt("user_num"),
 		rs.getString("content"),
-		toDate(rs.getTimestamp("content_regdate")),
-		toDate(rs.getTimestamp("content_moddate")),
+		rs.getString("content_regdate"),
+		rs.getString("content_moddate"),
 		rs.getString("name"),
 		convertOwner(rs));
 	}
@@ -140,9 +140,10 @@ public class VisitorDAO {
 		return new Owner(
 		rs.getInt("comment_num"),
 		rs.getString("comment"),
-		toDate(rs.getTimestamp("content_regdate")),
-		toDate(rs.getTimestamp("content_moddate")),
-		rs.getInt("content_num"));
+		rs.getString("comment_regdate"),
+		rs.getString("comment_moddate"),
+		rs.getInt("content_num"),
+		rs.getString("name"));
 	}
 	
 	
