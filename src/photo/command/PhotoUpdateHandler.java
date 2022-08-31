@@ -60,7 +60,7 @@ public class PhotoUpdateHandler implements CommandHandler {
         photo.setUrl(url);
         PhotoDao pDao = PhotoDao.getInstance();
         pDao.updatePhoto(photo);
-        res.sendRedirect("../photo/photo.do");
+        res.sendRedirect("../photo/list.do");
         return null;
         
 	}

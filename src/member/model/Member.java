@@ -18,6 +18,11 @@ public class Member {
 		this.gender = gender;
 		this.regdate = regdate;
 		this.img_path = img_path;
+
+	}
+
+	public Integer setNum(Integer num) {
+		return this.num = num;
 	}
 
 	public Integer getNum() {

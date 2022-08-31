@@ -13,6 +13,7 @@ import java.util.List;
 import jdbc.connection.ConnectionProvider;
 import photo.model.Photo;
 
+
 public class PhotoDao {
 	private PhotoDao() {
 		
@@ -21,6 +22,23 @@ public class PhotoDao {
 	
 	public static PhotoDao getInstance() {
 		return instance;
+	}
+	//사진 추가 
+	public void insertPhoto(Photo photo, Integer num) {
+		String sql = "insert into photo (photo_title, photo_regdate, photo_moddate, url, user_num, content) values (?,?,?,?,?,?)";//사진을 등록하는 쿼리문
+		try (Connection conn = ConnectionProvider.getConnection();//데이터베이스와 통신
+				PreparedStatement pstmt = conn.prepareStatement(sql); ) {//변수에 담아놓은 쿼리문을 데이터베이스에 넣어줌.
+			pstmt.setString(1, photo.getTitle());//1번째로 받는 데이터는 사진첩제목.
+			pstmt.setTimestamp(2, new Timestamp(System.currentTimeMillis())); //1번째로 받는 데이터는 사진첩내용.
+			pstmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+			pstmt.setString(4, photo.getUrl());//1번째로 받는 데이터는 사진url.
+			pstmt.setInt(5, num);//fk
+			pstmt.setString(6, photo.getContent());
+			pstmt.executeUpdate();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public List<Photo> selectPhoto() {

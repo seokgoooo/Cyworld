@@ -1,5 +1,6 @@
 package photo.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Photo {
@@ -81,5 +82,7 @@ public class Photo {
 	public void setUser_num(int user_num) {
 		this.user_num = user_num;
 	}
+
+	
 
 }

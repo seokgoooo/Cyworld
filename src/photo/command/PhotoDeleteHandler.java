@@ -29,7 +29,7 @@ public class PhotoDeleteHandler implements CommandHandler {
 		Integer photo_num = Integer.parseInt(req.getParameter("photo_num"));
 		PhotoDao photoDao = PhotoDao.getInstance();
 		photoDao.deletePhoto(photo_num);
-		res.sendRedirect("../photo/photo.do");//사진첩으로 redirect
+		res.sendRedirect("../photo/list.do");//사진첩으로 redirect
 		return null;
 	}
 }

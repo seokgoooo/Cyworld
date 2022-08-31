@@ -65,12 +65,13 @@ public class PhotoCommentDao {
 	}
 
 	public void insertReply(PhotoComment pc) {
-		String sql = "insert into photo_comment(photo_num, user_num, comment) values(?,?,?)"; // 댓글등록쿼리
+		String sql = "insert into photo_comment(photo_num, comment_regdate, comment, user_num) values(?,?,?,?)"; // 댓글등록쿼리
 		try (Connection conn = ConnectionProvider.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);) {
-			pstmt.setInt(1, pc.getComment_num());
-			pstmt.setTimestamp(2, new Timestamp(pc.getComment_regDate().getTime()));
-			pstmt.setTimestamp(3, new Timestamp(pc.getComment_modDate().getTime()));
+			pstmt.setInt(1, pc.getPhoto_num());
+			pstmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+			pstmt.setString(3, pc.getComment());
+			pstmt.setInt(4, pc.getUser_num());
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -27,6 +27,8 @@ public class MemberDao {
 						rs.getString("gender"),
 						toDate(rs.getTimestamp("regdate")),
 						rs.getString("img_path"));
+				member.setNum(rs.getInt("num"));
+
 			}
 			return member;
 		} finally {

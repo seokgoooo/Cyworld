@@ -67,6 +67,7 @@
 #comment {
  
  width: 500px;
+ resize: none;
  
 }
 
@@ -117,7 +118,7 @@
 							<div class="photo_contents">
 								<!-- 사진을 등록하는 페이지로 이동하는 버튼 -->
 								<input type="button" style="float: right;" value="등록하기"
-									onclick="location.href='../photo/photoWrite.do'">
+									onclick="location.href='../photo/write.do'">
 								<c:forEach var="photo" items="${photoPage.content}">
 									<!-- 등록된 사진을 출력 -->
 									<div class="photonumber">
@@ -128,7 +129,7 @@
 										<input id="delete" type="submit" value="삭제"
 											style="float: left;">
 									</form>
-									<form action="../photo/photoupdate.do" method="get">
+									<form action="../photo/photoupdate.do" method="post">
 										<input type="hidden" name="title" value="${photo.title}">
 										<input type="hidden" name="content" value="${photo.content}">
 										<input type="hidden" name="number" value="${photo.number}">
@@ -149,10 +150,14 @@
 									<div class="photo_content">${photo.content}</div>
 									
 									<div class="commentarea">
+									<c:forEach var="photocomment" items="${photocomment}">
+									<c:set var="photo_num" value="${photo.number}"></c:set>
+									<form action="../reply/comment.do" method="post">
 									 <textarea rows="4" cols="60" id="comment" placeholder="댓글을 작성하세요"></textarea>
 									 <br />
 									 <button type="button" id="commentbtn">작성</button>
-									 
+									 </c:forEach>
+									 </form>
 									</div>
 								</c:forEach>
 								<!-- 페이지 -->
